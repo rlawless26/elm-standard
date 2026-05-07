@@ -84,8 +84,8 @@ export default function AboutPage() {
               }}
             >
               The shop is small on purpose. Every cover gets the same
-              materials: 1/2&quot; MDF, brass mesh, ogee panel mold, finished
-              in milk-paint white. I do the measuring, the building, and —
+              materials: 1/2&quot; MDF, brass mesh, ogee panel moulding,
+              finished in milk-paint white. I do the measuring, the building, and —
               locally — the install. If you&apos;re farther out, I&apos;ll ship
               you the pieces pre-cut and pre-primed.
             </p>

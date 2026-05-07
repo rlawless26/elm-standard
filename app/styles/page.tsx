@@ -15,16 +15,16 @@ const styles: StyleSpec[] = [
   {
     name: "Traditional",
     img: "/style-traditional.svg",
-    tag: "Panel mold frame",
+    tag: "Decorative moulding & accents",
     body:
-      "Two recessed mesh panels framed in classic ogee panel mold. The right answer for pre-war and Victorian rooms with crown moldings and panel doors.",
+      "Two recessed mesh panels framed in classic ogee panel moulding. The right answer for pre-war and Victorian rooms with crown mouldings and panel doors.",
     detail:
-      '1/2" primed MDF · ogee panel mold trim · brass mesh · routed top edge',
+      '1/2" primed MDF · ogee panel moulding trim · brass mesh · routed top edge',
   },
   {
     name: "Shaker",
     img: "/style-shaker.svg",
-    tag: "Clean rails, no panel mold",
+    tag: "Clean lines & flat panels",
     body:
       "Flat rails and a single recessed mesh panel. Quiet, square, and built like a Shaker cabinet. Pairs cleanly with painted millwork and modern interiors with traditional bones.",
     detail:
@@ -33,7 +33,7 @@ const styles: StyleSpec[] = [
   {
     name: "Modern",
     img: "/style-modern.svg",
-    tag: "Wide rails, minimal frame",
+    tag: "Wide rails & minimalist style",
     body:
       "Generous rails and one wide-format mesh panel. Looks built-in. The cleanest of the three — for renovations where the radiator should disappear.",
     detail: '1/2" primed MDF · wide rails · fine brass mesh · plinth base',

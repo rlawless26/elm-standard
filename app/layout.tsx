@@ -36,8 +36,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Elm Standard — Custom radiator covers, handbuilt in Milton, MA",
-  description:
-    "Custom radiator covers, handbuilt in Milton, MA. One pair of hands, one shop.",
+  description: "Custom radiator covers, handbuilt in Milton, MA.",
 };
 
 export default function RootLayout({

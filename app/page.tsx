@@ -8,17 +8,17 @@ export const metadata = {
 const stylesPreview = [
   {
     name: "Traditional",
-    tag: "panel mold frame",
+    tag: "decorative moulding & accents",
     img: "/style-traditional.svg",
   },
   {
     name: "Shaker",
-    tag: "clean rails, no mold",
+    tag: "clean lines & flat panels",
     img: "/style-shaker.svg",
   },
   {
     name: "Modern",
-    tag: "wide rails, minimal",
+    tag: "wide rails & minimalist style",
     img: "/style-modern.svg",
   },
 ];
@@ -29,7 +29,7 @@ const valueProps: Array<[string, string]> = [
     "I come to you, take the measurements myself, and account for trim, baseboards, and pipe placement.",
   ],
   [
-    "One pair of hands",
+    "Built by hand",
     "Cut, sanded, and primed in my Milton shop. The same person who measures it builds it.",
   ],
   [
@@ -88,8 +88,8 @@ export default function HomePage() {
                 margin: 0,
               }}
             >
-              I handcraft custom radiator covers in painted MDF with brass mesh
-              and ogee panel mold. Three styles. Every one sized to your room.
+              I handcraft custom radiator covers with brass mesh and ogee
+              panel moulding. Three styles. Every one sized to your room.
             </p>
             <div style={{ display: "flex", gap: 14, marginTop: 8 }}>
               <Link href="/quote" className="btn-primary">
@@ -129,7 +129,7 @@ export default function HomePage() {
                 color: "var(--ink-3)",
               }}
             >
-              <span>Traditional · panel mold</span>
+              <span>Traditional · panel moulding</span>
               <span>38&quot; × 8&quot; × 30&quot;</span>
             </div>
           </div>
@@ -154,7 +154,7 @@ export default function HomePage() {
               marginBottom: 48,
             }}
           >
-            <span className="overline">Three styles, one shop</span>
+            <span className="overline">Three styles</span>
             <div className="rule-strong" />
             <h2
               style={{

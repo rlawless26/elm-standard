@@ -65,8 +65,7 @@ export default function Footer() {
               marginTop: 8,
             }}
           >
-            Custom radiator covers, handbuilt in Milton, MA. One pair of hands,
-            one shop.
+            Custom radiator covers, handbuilt in Milton, MA.
           </div>
         </div>
 
