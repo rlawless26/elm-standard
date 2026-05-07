@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import Wordmark from "./Wordmark";
 
 const NAV: Array<{ label: string; href: string }> = [
-  { label: "Three styles", href: "/styles" },
+  { label: "Home", href: "/" },
   { label: "How it works", href: "/how-it-works" },
+  { label: "Styles", href: "/styles" },
   { label: "About", href: "/about" },
 ];
 
@@ -18,8 +19,8 @@ export default function Header() {
       style={{
         position: "sticky",
         top: 0,
-        zIndex: 50,
-        background: "var(--bone)",
+        zIndex: 10,
+        background: "var(--paper)",
         borderBottom: "1px solid var(--hairline)",
       }}
     >
@@ -29,14 +30,18 @@ export default function Header() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          padding: "20px 32px",
+          height: 72,
         }}
       >
-        <Link href="/" aria-label="Elm Standard — home">
-          <Wordmark size={20} />
+        <Link
+          href="/"
+          aria-label="Elm Standard — home"
+          style={{ display: "inline-flex", alignItems: "center" }}
+        >
+          <Wordmark size={16} />
         </Link>
 
-        <nav style={{ display: "flex", alignItems: "center", gap: 32 }}>
+        <nav style={{ display: "flex", gap: 32, alignItems: "center" }}>
           {NAV.map(({ label, href }) => {
             const active = pathname === href;
             return (
@@ -46,9 +51,14 @@ export default function Header() {
                 style={{
                   fontFamily: "var(--font-sans)",
                   fontSize: 14,
-                  fontWeight: active ? 500 : 400,
-                  color: active ? "var(--ink)" : "var(--ink-2)",
-                  letterSpacing: "0.02em",
+                  fontWeight: 500,
+                  letterSpacing: "0.04em",
+                  color: active ? "var(--ink)" : "var(--ink-3)",
+                  borderBottom: active
+                    ? "1.5px solid var(--ink)"
+                    : "1.5px solid transparent",
+                  paddingBottom: 4,
+                  transition: "color 120ms",
                 }}
               >
                 {label}

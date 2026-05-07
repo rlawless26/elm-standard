@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Elm Standard — Custom radiator covers, handbuilt in Milton, MA</title>
+<link rel="stylesheet" href="../tokens/colors_and_type.css">
+<style>
+  body { margin: 0; background: var(--bone); }
+
+  /* =========================================================
+     MESH BACKGROUND — references the brass mesh of the covers.
+     A subtle radial-dot pattern, applied per-section as a
+     ::before overlay so foreground content stays untouched.
+     Two variants: default (ink dots) and .brass (brass dots).
+     ========================================================= */
+  .mesh-ground {
+    position: relative;
+  }
+  .mesh-ground::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, #1F1B16 0.7px, transparent 0.9px);
+    background-size: 6px 6px;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  .mesh-ground > * { position: relative; }
+  .mesh-ground.brass::before {
+    background-image: radial-gradient(circle, #B08A3E 0.8px, transparent 1px);
+    opacity: 0.28;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  .prose { max-width: 720px; }
+  .rule { height: 1px; background: var(--hairline); width: 100%; }
+  .rule-strong { height: 1.5px; background: var(--ink); width: 64px; }
+  .overline {
+    font-family: var(--font-sans); font-size: 11px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--oxide); color: var(--paper);
+    border: none; padding: 14px 26px; border-radius: 2px;
+    font-family: var(--font-sans); font-size: 15px; font-weight: 500;
+    letter-spacing: 0.04em; cursor: pointer;
+    transition: background 120ms cubic-bezier(0.2,0.6,0.2,1);
+  }
+  .btn-primary:hover { background: var(--oxide-deep); }
+  .btn-outline {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--ink); padding: 12px 26px; border-radius: 2px;
+    font-family: var(--font-sans); font-size: 15px; font-weight: 500;
+    letter-spacing: 0.04em; cursor: pointer;
+    transition: background 120ms cubic-bezier(0.2,0.6,0.2,1);
+  }
+  .btn-outline:hover { background: var(--linen); }
+  .btn-text {
+    background: transparent; border: none; color: var(--ink);
+    font-family: var(--font-sans); font-size: 15px; font-weight: 500;
+    letter-spacing: 0.04em; cursor: pointer; padding: 8px 0;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .field-input {
+    width: 100%; border: none; border-bottom: 1px solid var(--ink);
+    background: transparent; padding: 10px 0;
+    font-family: var(--font-sans); font-size: 16px; color: var(--ink);
+    outline: none;
+  }
+  .field-input.mono { font-family: var(--font-mono); }
+  .field-input:focus { border-bottom-color: var(--oxide); }
+  .field-label {
+    font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+    color: var(--ink-3);
+    display: block; margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="components/Wordmark.jsx"></script>
+<script type="text/babel" src="components/Header.jsx"></script>
+<script type="text/babel" src="components/Footer.jsx"></script>
+<script type="text/babel" src="components/Home.jsx"></script>
+<script type="text/babel" src="components/HowItWorks.jsx"></script>
+<script type="text/babel" src="components/Styles.jsx"></script>
+<script type="text/babel" src="components/Quote.jsx"></script>
+<script type="text/babel" src="components/About.jsx"></script>
+<script type="text/babel" src="components/Measure.jsx"></script>
+<script type="text/babel" src="components/Worksheets.jsx"></script>
+<script type="text/babel" src="components/Safety.jsx"></script>
+<script type="text/babel" src="components/FAQ.jsx"></script>
+<script type="text/babel" src="components/App.jsx"></script>
+
+</body>
+</html>

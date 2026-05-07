@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  
+  <circle cx="60" cy="60" r="56" stroke="#8C3A2A" stroke-width="1.5" fill="none"></circle>
+  <circle cx="60" cy="60" r="50" stroke="#8C3A2A" stroke-width="1" fill="none"></circle>
+  <text x="60" y="72" text-anchor="middle" font-family="&#39;Source Serif 4&#39;, &#39;Iowan Old Style&#39;, Georgia, serif" font-size="44" font-weight="500" fill="#8C3A2A" letter-spacing="-1">ES</text>
+  
+  <circle cx="60" cy="10" r="1.4" fill="#8C3A2A"></circle>
+  <circle cx="60" cy="110" r="1.4" fill="#8C3A2A"></circle>
+  <circle cx="10" cy="60" r="1.4" fill="#8C3A2A"></circle>
+  <circle cx="110" cy="60" r="1.4" fill="#8C3A2A"></circle>
+</svg>

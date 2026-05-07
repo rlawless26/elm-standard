@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, JetBrains_Mono, Petrona } from "next/font/google";
+import localFont from "next/font/local";
+import { Geist, JetBrains_Mono } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const petrona = Petrona({
-  subsets: ["latin"],
+const petrona = localFont({
+  src: [
+    {
+      path: "../public/fonts/Petrona-VariableFont_wght.ttf",
+      style: "normal",
+      weight: "100 900",
+    },
+    {
+      path: "../public/fonts/Petrona-Italic-VariableFont_wght.ttf",
+      style: "italic",
+      weight: "100 900",
+    },
+  ],
   variable: "--font-serif",
   display: "swap",
 });

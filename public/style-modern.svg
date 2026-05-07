@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" fill="none">
+  
+  <defs>
+    <pattern id="mesh-mod" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="0.7" fill="#A89E8B"></circle>
+    </pattern>
+  </defs>
+  
+  <rect x="40" y="40" width="520" height="20" fill="#FAF7F1" stroke="#1F1B16" stroke-width="1"></rect>
+  
+  <rect x="56" y="60" width="488" height="260" fill="#FAF7F1" stroke="#1F1B16" stroke-width="1"></rect>
+  
+  <rect x="116" y="108" width="368" height="160" fill="url(#mesh-mod)" stroke="#1F1B16" stroke-width="0.75"></rect>
+  
+  <line x1="56" y1="288" x2="544" y2="288" stroke="#1F1B16" stroke-width="0.4"></line>
+  
+  <rect x="56" y="320" width="488" height="14" fill="#ECE5D6" stroke="#1F1B16" stroke-width="0.6"></rect>
+</svg>

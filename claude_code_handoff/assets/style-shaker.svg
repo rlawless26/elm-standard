@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" fill="none">
+  
+  <defs>
+    <pattern id="mesh-shaker" x="0" y="0" width="8" height="8" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="0.9" fill="#A89E8B"></circle>
+    </pattern>
+  </defs>
+  
+  <rect x="44" y="44" width="512" height="10" fill="#FAF7F1" stroke="#1F1B16" stroke-width="1"></rect>
+  
+  <rect x="56" y="54" width="488" height="266" fill="#FAF7F1" stroke="#1F1B16" stroke-width="1"></rect>
+  
+  <rect x="92" y="84" width="416" height="208" fill="url(#mesh-shaker)" stroke="#1F1B16" stroke-width="0.75"></rect>
+  
+  <line x1="92" y1="54" x2="92" y2="320" stroke="#1F1B16" stroke-width="0.4"></line>
+  <line x1="508" y1="54" x2="508" y2="320" stroke="#1F1B16" stroke-width="0.4"></line>
+  <line x1="56" y1="84" x2="544" y2="84" stroke="#1F1B16" stroke-width="0.4"></line>
+  <line x1="56" y1="292" x2="544" y2="292" stroke="#1F1B16" stroke-width="0.4"></line>
+  
+  <rect x="44" y="320" width="512" height="4" fill="#ECE5D6" stroke="#1F1B16" stroke-width="0.6"></rect>
+  <rect x="56" y="324" width="36" height="12" fill="#FAF7F1" stroke="#1F1B16" stroke-width="0.6"></rect>
+  <rect x="508" y="324" width="36" height="12" fill="#FAF7F1" stroke="#1F1B16" stroke-width="0.6"></rect>
+</svg>

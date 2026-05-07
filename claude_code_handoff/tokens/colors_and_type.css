@@ -1,0 +1,251 @@
+/* =========================================================
+   ELM STANDARD — Colors & Type
+   Heritage craft. Warm, grounded. Built like a cover.
+   ========================================================= */
+
+@font-face {
+  font-family: 'Petrona';
+  src: url('../fonts/Petrona-VariableFont_wght.ttf') format('truetype-variations'),
+       url('../fonts/Petrona-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Petrona';
+  src: url('../fonts/Petrona-Italic-VariableFont_wght.ttf') format('truetype-variations'),
+       url('../fonts/Petrona-Italic-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---------- COLOR ----------
+     Anchored to the workshop: bone, milk paint, walnut ink,
+     red-oxide stamp, fresh-cut elm, brass mesh.            */
+
+  /* Surfaces (warm off-whites, light → dark) */
+  --bone:        #F4EFE6;   /* page ground — milk-painted MDF */
+  --paper:       #FAF7F1;   /* cards, panels */
+  --linen:       #ECE5D6;   /* secondary surface, soft band */
+  --canvas:      #E4DAC4;   /* tertiary surface, aged paper */
+
+  /* Ink (text, lines, frame) */
+  --ink:         #1F1B16;   /* near-black walnut — body text */
+  --ink-2:       #3B342A;   /* secondary text */
+  --ink-3:       #6B6052;   /* tertiary, captions */
+  --ink-4:       #A89E8B;   /* hairlines, disabled, mesh dots */
+  --hairline:    #D9D0BD;   /* 1px rules */
+
+  /* Brand accents */
+  --oxide:       #8C3A2A;   /* red-oxide stamp — primary accent */
+  --oxide-deep:  #6B2A1C;   /* hover/press */
+  --brass:       #B08A3E;   /* metal mesh, fine details */
+  --moss:        #4A5A3A;   /* secondary accent — cast-iron green */
+  --elm:         #6E5A3C;   /* warm wood, hover ground */
+
+  /* Semantic */
+  --fg:          var(--ink);
+  --fg-muted:    var(--ink-3);
+  --fg-faint:    var(--ink-4);
+  --bg:          var(--bone);
+  --bg-elev:     var(--paper);
+  --bg-sunk:     var(--linen);
+  --accent:      var(--oxide);
+  --accent-fg:   var(--paper);
+  --rule:        var(--hairline);
+
+  --success:     #4A5A3A;
+  --warning:     #B08A3E;
+  --danger:      #8C3A2A;
+
+  /* ---------- TYPE ---------- */
+  --font-serif:  'Petrona', 'Iowan Old Style', 'Hoefler Text', Georgia, serif;
+  --font-sans:   'Geist', 'Söhne', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:   'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Scale — modular, Major Third (1.250) anchored at 17px */
+  --t-overline:  0.6875rem;  /* 11px */
+  --t-caption:   0.8125rem;  /* 13px */
+  --t-small:     0.9375rem;  /* 15px */
+  --t-body:      1.0625rem;  /* 17px */
+  --t-lead:      1.25rem;    /* 20px */
+  --t-h4:        1.5rem;     /* 24px */
+  --t-h3:        1.875rem;   /* 30px */
+  --t-h2:        2.5rem;     /* 40px */
+  --t-h1:        3.5rem;     /* 56px */
+  --t-display:   5rem;       /* 80px */
+
+  /* Weights */
+  --w-regular: 400;
+  --w-medium:  500;
+  --w-semi:    600;
+  --w-bold:    700;
+
+  /* Leading */
+  --lh-tight:  1.08;
+  --lh-snug:   1.2;
+  --lh-normal: 1.45;
+  --lh-loose:  1.6;
+
+  /* Tracking */
+  --tr-tight:  -0.02em;
+  --tr-normal: 0;
+  --tr-wide:   0.04em;
+  --tr-caps:   0.14em;   /* small caps / overlines */
+
+  /* ---------- SPACING (8pt with 4 hairline) ---------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+
+  /* ---------- RADII ---------- */
+  /* Furniture has soft eased corners, not pillowed.        */
+  --r-1: 2px;
+  --r-2: 4px;
+  --r-3: 8px;
+  --r-pill: 999px;
+
+  /* ---------- SHADOWS ----------
+     Subtle, like raking workshop light. Never glowy.       */
+  --sh-1: 0 1px 0 rgba(31,27,22,0.04), 0 1px 2px rgba(31,27,22,0.06);
+  --sh-2: 0 1px 0 rgba(31,27,22,0.04), 0 4px 12px rgba(31,27,22,0.08);
+  --sh-3: 0 2px 0 rgba(31,27,22,0.04), 0 12px 28px rgba(31,27,22,0.10);
+  --sh-inset: inset 0 0 0 1px var(--hairline);
+
+  /* ---------- BORDERS ---------- */
+  --b-hair: 1px solid var(--hairline);
+  --b-rule: 1px solid var(--ink-4);
+  --b-strong: 1.5px solid var(--ink);
+}
+
+/* =========================================================
+   BASE TYPOGRAPHY
+   ========================================================= */
+
+html, body {
+  font-family: var(--font-sans);
+  font-size: var(--t-body);
+  line-height: var(--lh-normal);
+  color: var(--fg);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Display + headings — Source Serif 4 */
+.display, h1.display {
+  font-family: var(--font-serif);
+  font-size: var(--t-display);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  color: var(--ink);
+}
+
+h1, .h1 {
+  font-family: var(--font-serif);
+  font-size: var(--t-h1);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tr-tight);
+  color: var(--ink);
+  margin: 0;
+}
+
+h2, .h2 {
+  font-family: var(--font-serif);
+  font-size: var(--t-h2);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-tight);
+  color: var(--ink);
+  margin: 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-serif);
+  font-size: var(--t-h3);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-snug);
+  color: var(--ink);
+  margin: 0;
+}
+
+h4, .h4 {
+  font-family: var(--font-sans);
+  font-size: var(--t-h4);
+  font-weight: var(--w-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-tight);
+  color: var(--ink);
+  margin: 0;
+}
+
+.lead, p.lead {
+  font-family: var(--font-serif);
+  font-size: var(--t-lead);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-loose);
+  color: var(--ink-2);
+}
+
+p, .p {
+  font-size: var(--t-body);
+  line-height: var(--lh-normal);
+  color: var(--ink-2);
+  margin: 0;
+}
+
+small, .small, .caption {
+  font-size: var(--t-caption);
+  line-height: var(--lh-normal);
+  color: var(--ink-3);
+}
+
+.overline {
+  font-family: var(--font-sans);
+  font-size: var(--t-overline);
+  font-weight: var(--w-medium);
+  letter-spacing: var(--tr-caps);
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.mono, code, kbd, .spec {
+  font-family: var(--font-mono);
+  font-size: 0.94em;
+  font-feature-settings: "tnum" 1, "ss01" 1;
+  color: var(--ink);
+}
+
+/* Wordmark style — used for the Elm Standard logotype */
+.wordmark {
+  font-family: var(--font-serif);
+  font-weight: var(--w-regular);
+  letter-spacing: var(--tr-tight);
+  font-feature-settings: "ss01" 1, "liga" 1;
+}
+
+/* Numerals — tabular for measurements */
+.tnum {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Selection */
+::selection {
+  background: var(--oxide);
+  color: var(--paper);
+}
