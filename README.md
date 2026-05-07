@@ -4,7 +4,10 @@ Custom radiator covers, handbuilt in Milton, MA. Marketing site.
 
 ## Stack
 
-Next.js 15 (App Router) · React 18 · TypeScript · CSS variables (no Tailwind). Fonts via `next/font`: Petrona (serif), Geist (sans), JetBrains Mono.
+Next.js 15 (App Router) · React 18 · TypeScript · CSS variables (no Tailwind).
+Fonts via `next/font`: Petrona local variable TTF (serif), Geist + JetBrains Mono via Google Fonts.
+
+Hosted on Vercel; pushes to `main` auto-deploy to https://elmstandard.com.
 
 ## Develop
 
@@ -18,9 +21,10 @@ npm run typecheck  # tsc --noEmit
 ## Layout
 
 ```
-app/                 routes (App Router); each folder = a page
-components/          shared UI (Header, Footer, Wordmark, PageStub)
-design_handoff_site_update/   design references — copy deck, prototypes, tokens
+app/                    routes (App Router); each folder = a page
+components/             shared UI (Header, Footer, Wordmark)
+public/                 served as-is — logo SVGs, hero PNG, fonts/, worksheets/
+claude_code_handoff/    design source-of-truth — copy deck, prototypes, tokens, brand assets
 ```
 
-The handoff in `design_handoff_site_update/` is the source of truth for copy, layout, and design tokens. Tokens are ported into `app/globals.css` as CSS custom properties.
+The handoff in `claude_code_handoff/` is the canonical reference for copy, layout, and design tokens. Tokens are ported into `app/globals.css` as CSS custom properties; brand assets are copied into `public/`.
