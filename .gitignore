@@ -37,6 +37,10 @@ out/
 .turbo/
 .cache/
 
+# TypeScript / Next.js generated
+*.tsbuildinfo
+next-env.d.ts
+
 # Python
 __pycache__/
 *.py[cod]
