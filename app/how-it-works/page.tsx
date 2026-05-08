@@ -30,7 +30,7 @@ const steps: Step[] = [
     n: "03",
     title: "Build",
     body:
-      "Cut, sanded, primed, and finished in the Milton shop. Brass mesh fitted by hand. Every cover gets the back-stamp before it leaves the bench.",
+      "Cut, sanded, primed, and finished in the Milton shop. Steel screen fitted by hand — brass available as an upgrade. Every cover gets the back-stamp before it leaves the bench.",
   },
   {
     n: "04",

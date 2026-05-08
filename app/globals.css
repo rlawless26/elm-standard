@@ -359,6 +359,80 @@ small, .small, .caption {
 /* FAQ TOC item hover state handled by data attributes; nothing required here.
    FAQ accordion item hover background — adds 12px horizontal padding when hovered/open. */
 
+/* =========================================================
+   QUOTE CONFIGURATOR — responsive layout helpers
+   ========================================================= */
+
+.quote-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  align-items: start;
+}
+@media (min-width: 880px) {
+  .quote-layout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 48px;
+  }
+}
+
+.quote-summary {
+  position: relative;
+}
+@media (min-width: 880px) {
+  .quote-summary {
+    position: sticky;
+    top: 96px;
+  }
+}
+
+.card-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 600px) {
+  .card-grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+.card-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 600px) {
+  .card-grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 880px) {
+  .card-grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Selectable cards — base + selected state */
+.select-card {
+  background: var(--paper);
+  border: 1.5px solid var(--hairline);
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  font: inherit;
+  width: 100%;
+  position: relative;
+  transition: border-color 120ms, background 120ms, box-shadow 220ms;
+}
+.select-card:hover {
+  border-color: var(--ink-4);
+  box-shadow: var(--sh-1);
+}
+.select-card[data-selected="true"] {
+  border-color: var(--oxide);
+  border-width: 1.5px;
+  background: rgba(140, 58, 42, 0.04);
+  box-shadow: 0 0 0 1px var(--oxide);
+}
+
 /* Mesh-dot section ground (used on specific bands, not global) */
 .mesh-ground { position: relative; }
 .mesh-ground::before {

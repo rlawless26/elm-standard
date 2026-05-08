@@ -29,7 +29,7 @@ const valueProps: Array<[string, string]> = [
     "I come to you, take the measurements myself, and account for trim, baseboards, and pipe placement.",
   ],
   [
-    "Built by hand",
+    "Made to order",
     "Cut, sanded, and primed in my Milton shop. The same person who measures it builds it.",
   ],
   [
@@ -84,8 +84,8 @@ export default function HomePage() {
                 margin: 0,
               }}
             >
-              I handcraft custom radiator covers with brass mesh and ogee
-              panel moulding. Three styles. Every one sized to your room.
+              Built to your radiator&apos;s exact size. Three styles, three
+              screens, your trim color. Local delivery or flat-pack shipping.
             </p>
             <div style={{ display: "flex", gap: 14, marginTop: 8 }}>
               <Link href="/quote" className="btn-primary">

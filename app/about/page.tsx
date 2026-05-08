@@ -7,7 +7,7 @@ const stats: Array<[string, string]> = [
   ["Lead time", "4–6 weeks"],
   ["Local radius", "30 mi · MA"],
   ["Started", "2025"],
-  ["Materials", "MDF · brass · paint"],
+  ["Finishes", "3 whites + brass option"],
 ];
 
 export default function AboutPage() {
@@ -27,7 +27,7 @@ export default function AboutPage() {
               lineHeight: 1.05,
             }}
           >
-            One bench, one pair of hands.
+            Started on Elm Street.
           </h1>
         </div>
       </section>
@@ -83,11 +83,11 @@ export default function AboutPage() {
                 margin: 0,
               }}
             >
-              The shop is small on purpose. Every cover gets the same
-              materials: 1/2&quot; MDF, brass mesh, ogee panel moulding,
-              finished in milk-paint white. I do the measuring, the building, and —
-              locally — the install. If you&apos;re farther out, I&apos;ll ship
-              you the pieces pre-cut and pre-primed.
+              The shop is small on purpose. Same standards across every
+              cover, same finish, same level of fit. I do the measuring and
+              the building. Locally, I do the install too. Farther out, you
+              get a flat-pack with everything pre-cut, pre-primed, and ready
+              to assemble.
             </p>
             <p
               style={{

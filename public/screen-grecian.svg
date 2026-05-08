@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="140" viewBox="0 0 200 140" fill="none">
+  <defs>
+    <pattern id="grecian" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M 4 24 L 4 4 L 24 4 L 24 20 L 8 20 L 8 8 L 20 8 L 20 16 L 12 16"
+            stroke="#C8C0B0" stroke-width="1.5" fill="none" stroke-linecap="square" stroke-linejoin="miter"/>
+    </pattern>
+  </defs>
+  <rect x="0.5" y="0.5" width="199" height="139" fill="#F5F0E8" stroke="#9E9588" stroke-width="1"/>
+  <rect x="6" y="6" width="188" height="128" fill="url(#grecian)"/>
+</svg>

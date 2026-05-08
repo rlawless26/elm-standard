@@ -18,8 +18,7 @@ const styles: StyleSpec[] = [
     tag: "Decorative moulding & accents",
     body:
       "Two recessed mesh panels framed in classic ogee panel moulding. The right answer for pre-war and Victorian rooms with crown mouldings and panel doors.",
-    detail:
-      '1/2" primed MDF · ogee panel moulding trim · brass mesh · routed top edge',
+    detail: '1/2" primed MDF · ogee panel moulding · routed top edge',
   },
   {
     name: "Shaker",
@@ -27,8 +26,7 @@ const styles: StyleSpec[] = [
     tag: "Clean lines & flat panels",
     body:
       "Flat rails and a single recessed mesh panel. Quiet, square, and built like a Shaker cabinet. Pairs cleanly with painted millwork and modern interiors with traditional bones.",
-    detail:
-      '1/2" primed MDF · square stiles and rails · brass mesh · flush top',
+    detail: '1/2" primed MDF · square stiles and rails · flush top',
   },
   {
     name: "Modern",
@@ -36,7 +34,7 @@ const styles: StyleSpec[] = [
     tag: "Wide rails & minimalist style",
     body:
       "Generous rails and one wide-format mesh panel. Looks built-in. The cleanest of the three — for renovations where the radiator should disappear.",
-    detail: '1/2" primed MDF · wide rails · fine brass mesh · plinth base',
+    detail: '1/2" primed MDF · wide rails · plinth base',
   },
 ];
 
@@ -65,7 +63,7 @@ export default function StylesPage() {
                 margin: 0,
               }}
             >
-              All the same materials. Pick the one that fits the room.
+              Three styles. Pick the one that fits the room.
             </h1>
           </div>
         </div>
@@ -173,6 +171,21 @@ export default function StylesPage() {
                   >
                     {s.detail}
                   </div>
+                  <Link
+                    href="/quote"
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 12,
+                      color: "var(--ink-4)",
+                      lineHeight: 1.6,
+                      textDecoration: "underline",
+                      textDecorationColor: "var(--hairline)",
+                      textUnderlineOffset: 4,
+                      width: "fit-content",
+                    }}
+                  >
+                    Choose your screen pattern in the configurator →
+                  </Link>
                   <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
                     <Link href="/quote" className="btn-primary">
                       Quote a {s.name.toLowerCase()}
