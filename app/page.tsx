@@ -72,11 +72,7 @@ export default function HomePage() {
                 margin: 0,
               }}
             >
-              Built to your radiator.
-              <br />
-              <span style={{ color: "var(--ink-3)" }}>
-                Delivered, leveled, installed.
-              </span>
+              Radiator covers, handbuilt to fit.
             </h1>
             <p
               style={{
