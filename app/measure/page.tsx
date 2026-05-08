@@ -541,7 +541,7 @@ export default function MeasurePage() {
               marginTop: 8,
             }}
           >
-            <a href="mailto:hello@elmstandard.co">hello@elmstandard.co</a>
+            <a href="mailto:hello@elmstandard.com">hello@elmstandard.com</a>
           </div>
         </div>
       </section>

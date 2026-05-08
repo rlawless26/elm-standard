@@ -169,14 +169,20 @@ function buildMailto(config: Config): string {
   if (config.notes) {
     lines.push("— Notes —", config.notes);
   }
-  return `mailto:hello@elmstandard.co?subject=${encodeURIComponent(
+  return `mailto:hello@elmstandard.com?subject=${encodeURIComponent(
     subject,
   )}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
+type SubmitError = "generic" | "network" | "rate" | null;
+
 export default function QuotePage() {
   const [config, setConfig] = useState<Config>(initialConfig);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<SubmitError>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [honeypot, setHoneypot] = useState("");
 
   const update = <K extends keyof Config>(k: K, v: Config[K]) =>
     setConfig((c) => ({ ...c, [k]: v }));
@@ -189,10 +195,44 @@ export default function QuotePage() {
     }));
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    window.location.href = buildMailto(config);
-    setSubmitted(true);
+    if (submitting) return;
+    setSubmitting(true);
+    setError(null);
+    setFieldErrors({});
+
+    try {
+      const res = await fetch("/api/quote", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ...config, company: honeypot }),
+      });
+      const json = (await res.json().catch(() => null)) as
+        | { ok: boolean; errors?: Record<string, string>; error?: string }
+        | null;
+
+      if (res.status === 429) {
+        setError("rate");
+        setSubmitting(false);
+        return;
+      }
+      if (res.status === 400 && json?.errors) {
+        setFieldErrors(json.errors);
+        setSubmitting(false);
+        return;
+      }
+      if (!res.ok || !json?.ok) {
+        setError("generic");
+        setSubmitting(false);
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setError("network");
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -230,16 +270,16 @@ export default function QuotePage() {
               lineHeight: 1.55,
             }}
           >
-            Your mail client should have opened a draft to{" "}
+            I&apos;ll come back with a one-page quote within two business
+            days. If anything&apos;s unclear, I&apos;ll email{" "}
             <a
-              href="mailto:hello@elmstandard.co"
+              href="mailto:hello@elmstandard.com"
               className="oxide-link"
               style={{ whiteSpace: "nowrap" }}
             >
-              hello@elmstandard.co
+              from hello@elmstandard.com
             </a>{" "}
-            with your configuration. If it didn&apos;t, email me directly with
-            your details and I&apos;ll come back with a one-page quote.
+            first.
           </p>
           <Link href="/" className="btn-outline">
             Back to home
@@ -692,6 +732,97 @@ export default function QuotePage() {
                 </div>
               </Step>
 
+              {/* HONEYPOT — hidden field bots fill in. Real users never see it. */}
+              <div
+                aria-hidden="true"
+                style={{
+                  position: "absolute",
+                  left: -9999,
+                  width: 1,
+                  height: 1,
+                  overflow: "hidden",
+                }}
+              >
+                <label>
+                  Company (leave blank)
+                  <input
+                    type="text"
+                    name="company"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={honeypot}
+                    onChange={(e) => setHoneypot(e.target.value)}
+                  />
+                </label>
+              </div>
+
+              {Object.keys(fieldErrors).length > 0 ? (
+                <div
+                  style={{
+                    background: "var(--paper)",
+                    border: "1px solid var(--oxide)",
+                    padding: 16,
+                    fontFamily: "var(--font-sans)",
+                    fontSize: 14,
+                    color: "var(--ink)",
+                    lineHeight: 1.5,
+                  }}
+                  role="alert"
+                >
+                  <div
+                    style={{
+                      fontFamily: "var(--font-mono)",
+                      fontSize: 11,
+                      color: "var(--oxide)",
+                      letterSpacing: "0.06em",
+                      textTransform: "uppercase",
+                      marginBottom: 6,
+                    }}
+                  >
+                    A few things to fix
+                  </div>
+                  <ul style={{ margin: 0, paddingLeft: 18 }}>
+                    {Object.values(fieldErrors).map((m, i) => (
+                      <li key={i}>{m}</li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
+
+              {error ? (
+                <div
+                  style={{
+                    background: "var(--paper)",
+                    border: "1px solid var(--oxide)",
+                    padding: 16,
+                    fontFamily: "var(--font-sans)",
+                    fontSize: 14,
+                    color: "var(--ink)",
+                    lineHeight: 1.5,
+                  }}
+                  role="alert"
+                >
+                  {error === "rate" ? (
+                    <>
+                      One submission per minute, please. Wait a moment and try
+                      again.
+                    </>
+                  ) : (
+                    <>
+                      Something broke on my end. Try again in a minute, or
+                      email me directly with your details:{" "}
+                      <a
+                        href={buildMailto(config)}
+                        className="oxide-link"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        send via email →
+                      </a>
+                    </>
+                  )}
+                </div>
+              ) : null}
+
               {/* SUBMIT FOOTER */}
               <div
                 style={{
@@ -715,14 +846,19 @@ export default function QuotePage() {
                   Quote returned within 2 business days. No spam, no
                   follow-up loops.
                 </span>
-                <button type="submit" className="btn-primary">
-                  Request quote →
+                <button
+                  type="submit"
+                  className="btn-primary"
+                  disabled={submitting}
+                  style={{ opacity: submitting ? 0.6 : 1 }}
+                >
+                  {submitting ? "Sending..." : "Request quote →"}
                 </button>
               </div>
             </div>
 
             {/* RIGHT — SUMMARY */}
-            <SummaryCard config={config} />
+            <SummaryCard config={config} submitting={submitting} />
           </form>
         </div>
       </section>
@@ -811,7 +947,13 @@ function Field({
   );
 }
 
-function SummaryCard({ config }: { config: Config }) {
+function SummaryCard({
+  config,
+  submitting,
+}: {
+  config: Config;
+  submitting: boolean;
+}) {
   const screen = SCREENS.find((s) => s.name === config.screen);
   const color = COLORS.find((c) => c.name === config.color);
   const style = STYLES.find((s) => s.name === config.style);
@@ -950,8 +1092,17 @@ function SummaryCard({ config }: { config: Config }) {
       </div>
 
       {/* Mini CTA */}
-      <button type="submit" className="btn-primary" style={{ width: "100%", justifyContent: "center" }}>
-        Request quote →
+      <button
+        type="submit"
+        className="btn-primary"
+        disabled={submitting}
+        style={{
+          width: "100%",
+          justifyContent: "center",
+          opacity: submitting ? 0.6 : 1,
+        }}
+      >
+        {submitting ? "Sending..." : "Request quote →"}
       </button>
     </aside>
   );

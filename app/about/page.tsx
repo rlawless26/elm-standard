@@ -186,8 +186,8 @@ export default function AboutPage() {
                   margin: 0,
                 }}
               >
-                <a href="mailto:hello@elmstandard.co">
-                  hello@elmstandard.co
+                <a href="mailto:hello@elmstandard.com">
+                  hello@elmstandard.com
                 </a>
                 <br />
                 @elmstandard

@@ -234,14 +234,14 @@ export default function WorksheetsPage() {
               style={{ height: 1, background: "var(--ink)", width: 28 }}
             />
             <a
-              href="mailto:hello@elmstandard.co"
+              href="mailto:hello@elmstandard.com"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: 18,
                 color: "var(--ink)",
               }}
             >
-              hello@elmstandard.co
+              hello@elmstandard.com
             </a>
             <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
               <Link href="/measure" className="btn-outline">

@@ -306,7 +306,7 @@ export default function FAQPage() {
                   Didn't find your answer?
                 </h3>
                 <a
-                  href="mailto:hello@elmstandard.co"
+                  href="mailto:hello@elmstandard.com"
                   style={{
                     fontFamily: "var(--font-mono)",
                     fontSize: 16,
@@ -315,7 +315,7 @@ export default function FAQPage() {
                     display: "inline-block",
                   }}
                 >
-                  hello@elmstandard.co
+                  hello@elmstandard.com
                 </a>
               </div>
               <Link href="/quote" className="btn-primary">
