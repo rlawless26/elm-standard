@@ -13,35 +13,16 @@ const stats: Array<[string, string]> = [
 export default function AboutPage() {
   return (
     <main>
-      <section style={{ padding: "96px 0 48px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 48px" }}>
         <div className="container" style={{ maxWidth: 720 }}>
           <span className="overline">About the shop</span>
           <div className="rule-strong" style={{ margin: "12px 0" }} />
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 56,
-              fontWeight: 400,
-              margin: 0,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.05,
-            }}
-          >
-            Started on Elm Street.
-          </h1>
+          <h1 className="display-h1">Started on Elm Street.</h1>
         </div>
       </section>
 
-      <section style={{ padding: "32px 0 96px" }}>
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 64,
-            alignItems: "flex-start",
-          }}
-        >
+      <section className="section-pad-lg" style={{ padding: "32px 0 96px" }}>
+        <div className="container r-grid-2" style={{ gap: 64 }}>
           <div
             className="prose"
             style={{ display: "flex", flexDirection: "column", gap: 20 }}
@@ -108,11 +89,8 @@ export default function AboutPage() {
               }}
             />
             <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: 24,
-              }}
+              className="r-grid-2"
+              style={{ gap: 24 }}
             >
               {stats.map(([label, value]) => (
                 <div
@@ -139,6 +117,7 @@ export default function AboutPage() {
           </div>
 
           <aside
+            className="sticky-desktop"
             style={{
               background: "var(--paper)",
               border: "1px solid var(--hairline)",

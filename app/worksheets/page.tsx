@@ -41,30 +41,14 @@ export default function WorksheetsPage() {
   return (
     <main>
       {/* HERO */}
-      <section style={{ padding: "96px 0 48px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 48px" }}>
         <div className="container" style={{ maxWidth: 820 }}>
           <span className="overline">Printables</span>
           <div className="rule-strong" style={{ margin: "12px 0" }} />
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 56,
-              fontWeight: 400,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-              margin: 0,
-            }}
-          >
-            Print, measure, send.
-          </h1>
+          <h1 className="display-h1">Print, measure, send.</h1>
           <p
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 20,
-              lineHeight: 1.55,
-              color: "var(--ink-2)",
-              margin: "20px 0 0",
-            }}
+            className="lead-fluid"
+            style={{ marginTop: 20 }}
           >
             Three worksheets covering the most common radiator situations.
             Print, fill in with a pencil, and attach the photo to your quote
@@ -74,15 +58,8 @@ export default function WorksheetsPage() {
       </section>
 
       {/* THREE SHEETS */}
-      <section style={{ padding: "32px 0 96px" }}>
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 24,
-          }}
-        >
+      <section className="section-pad-lg" style={{ padding: "32px 0 96px" }}>
+        <div className="container r-grid-3">
           {sheets.map((s) => (
             <article
               key={s.n}
@@ -115,17 +92,7 @@ export default function WorksheetsPage() {
                 >
                   WORKSHEET {s.n}
                 </span>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontSize: 26,
-                    fontWeight: 400,
-                    margin: 0,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  {s.title}
-                </h3>
+                <h3 className="display-h3">{s.title}</h3>
                 <p
                   style={{
                     fontFamily: "var(--font-serif)",
@@ -174,6 +141,7 @@ export default function WorksheetsPage() {
 
       {/* DON'T WANT TO PRINT */}
       <section
+        className="section-pad-md"
         style={{
           padding: "64px 0",
           background: "var(--paper)",
@@ -181,30 +149,13 @@ export default function WorksheetsPage() {
           borderBottom: "1px solid var(--hairline)",
         }}
       >
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 64,
-            alignItems: "center",
-          }}
-        >
+        <div className="container r-grid-2" style={{ gap: 64 }}>
           <div
             style={{ display: "flex", flexDirection: "column", gap: 14 }}
           >
-            <span className="overline">Don't want to print?</span>
+            <span className="overline">Don&apos;t want to print?</span>
             <div className="rule-strong" />
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 36,
-                fontWeight: 400,
-                lineHeight: 1.15,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
+            <h2 className="display-h2">
               Email me your measurements and a few photos.
             </h2>
             <p
@@ -243,7 +194,7 @@ export default function WorksheetsPage() {
             >
               hello@elmstandard.com
             </a>
-            <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
+            <div style={{ display: "flex", gap: 12, marginTop: 8, flexWrap: "wrap" }}>
               <Link href="/measure" className="btn-outline">
                 Read the guide
               </Link>

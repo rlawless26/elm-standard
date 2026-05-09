@@ -41,7 +41,7 @@ const styles: StyleSpec[] = [
 export default function StylesPage() {
   return (
     <main>
-      <section style={{ padding: "96px 0 48px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 48px" }}>
         <div className="container">
           <div
             style={{
@@ -53,23 +53,14 @@ export default function StylesPage() {
           >
             <span className="overline">Three styles</span>
             <div className="rule-strong" />
-            <h1
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 56,
-                fontWeight: 400,
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
+            <h1 className="display-h1">
               Three styles. Pick the one that fits the room.
             </h1>
           </div>
         </div>
       </section>
 
-      <section style={{ padding: "32px 0 96px" }}>
+      <section className="section-pad-lg" style={{ padding: "32px 0 96px" }}>
         <div
           className="container"
           style={{ display: "flex", flexDirection: "column", gap: 64 }}
@@ -77,15 +68,7 @@ export default function StylesPage() {
           {styles.map((s, i) => {
             const imageFirst = i % 2 === 0;
             return (
-              <article
-                key={s.name}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: imageFirst ? "1.1fr 1fr" : "1fr 1.1fr",
-                  gap: 48,
-                  alignItems: "center",
-                }}
-              >
+              <article key={s.name} className="r-grid-hero">
                 <div
                   style={{
                     order: imageFirst ? 1 : 2,
@@ -132,17 +115,7 @@ export default function StylesPage() {
                   }}
                 >
                   <span className="overline">{s.tag}</span>
-                  <h2
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      fontSize: 48,
-                      fontWeight: 400,
-                      margin: 0,
-                      letterSpacing: "-0.02em",
-                    }}
-                  >
-                    {s.name}
-                  </h2>
+                  <h2 className="display-h2">{s.name}</h2>
                   <p
                     style={{
                       fontFamily: "var(--font-serif)",

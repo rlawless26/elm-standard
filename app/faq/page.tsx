@@ -166,38 +166,20 @@ export default function FAQPage() {
   return (
     <main>
       {/* HERO */}
-      <section style={{ padding: "96px 0 48px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 48px" }}>
         <div className="container" style={{ maxWidth: 820 }}>
           <span className="overline">Common questions</span>
           <div className="rule-strong" style={{ margin: "12px 0" }} />
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 56,
-              fontWeight: 400,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-              margin: 0,
-            }}
-          >
-            Most-asked, plainly answered.
-          </h1>
+          <h1 className="display-h1">Most-asked, plainly answered.</h1>
         </div>
       </section>
 
       {/* TOC + ACCORDIONS */}
-      <section style={{ padding: "32px 0 96px" }}>
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "240px 1fr",
-            gap: 64,
-            alignItems: "flex-start",
-          }}
-        >
+      <section className="section-pad-lg" style={{ padding: "32px 0 96px" }}>
+        <div className="container r-grid-toc" style={{ gap: 64 }}>
           {/* TOC */}
           <aside
+            className="sticky-desktop"
             style={{
               position: "sticky",
               top: 96,
@@ -294,17 +276,7 @@ export default function FAQPage() {
               }}
             >
               <div>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontSize: 26,
-                    fontWeight: 400,
-                    margin: 0,
-                    letterSpacing: "-0.01em",
-                  }}
-                >
-                  Didn't find your answer?
-                </h3>
+                <h3 className="display-h3">Didn&apos;t find your answer?</h3>
                 <a
                   href="mailto:hello@elmstandard.com"
                   style={{
@@ -353,17 +325,7 @@ function FAQGroup({ group }: { group: Group }) {
         >
           {group.n}
         </span>
-        <h2
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: 32,
-            fontWeight: 400,
-            margin: 0,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          {group.title}
-        </h2>
+        <h2 className="display-h3">{group.title}</h2>
       </header>
 
       <div style={{ display: "flex", flexDirection: "column" }}>

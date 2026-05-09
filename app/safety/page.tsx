@@ -13,41 +13,24 @@ export default function SafetyPage() {
   return (
     <main>
       {/* HERO */}
-      <section style={{ padding: "96px 0 48px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 48px" }}>
         <div className="container" style={{ maxWidth: 820 }}>
           <span className="overline">Safety</span>
           <div className="rule-strong" style={{ margin: "12px 0" }} />
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 56,
-              fontWeight: 400,
-              lineHeight: 1.05,
-              letterSpacing: "-0.02em",
-              margin: 0,
-            }}
-          >
+          <h1 className="display-h1">
             Anchored to the wall. Stable on the floor.
           </h1>
-          <p
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 20,
-              lineHeight: 1.55,
-              color: "var(--ink-2)",
-              margin: "24px 0 0",
-            }}
-          >
-            Every Elm Standard cover that's installed locally gets anchored to
-            the wall. Every flat-pack ships with the hardware to do the same.
-            Furniture that tips over hurts kids, and a radiator cover with a
-            child climbing on it is no different.
+          <p className="lead-fluid" style={{ marginTop: 24 }}>
+            Every Elm Standard cover that&apos;s installed locally gets
+            anchored to the wall. Every flat-pack ships with the hardware to do
+            the same. Furniture that tips over hurts kids, and a radiator cover
+            with a child climbing on it is no different.
           </p>
         </div>
       </section>
 
       {/* WHAT'S INCLUDED */}
-      <section style={{ padding: "64px 0" }}>
+      <section className="section-pad-md" style={{ padding: "64px 0" }}>
         <div className="container">
           <div
             style={{
@@ -58,28 +41,11 @@ export default function SafetyPage() {
               marginBottom: 32,
             }}
           >
-            <span className="overline">What's included</span>
+            <span className="overline">What&apos;s included</span>
             <div className="rule-strong" />
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 36,
-                fontWeight: 400,
-                lineHeight: 1.15,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
-              Two channels. Same hardware story.
-            </h2>
+            <h2 className="display-h2">Two channels. Same hardware story.</h2>
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 24,
-            }}
-          >
+          <div className="r-grid-2">
             <ChannelCard
               spec="LOCAL INSTALL"
               title="I anchor it for you"
@@ -96,6 +62,7 @@ export default function SafetyPage() {
 
       {/* CPSC PULL QUOTE */}
       <section
+        className="section-pad-lg"
         style={{
           padding: "96px 0",
           background: "var(--paper)",
@@ -110,20 +77,13 @@ export default function SafetyPage() {
           <figure
             style={{
               margin: 0,
-              padding: "24px 0 24px 32px",
+              padding: "24px 0 24px 24px",
               borderLeft: "1.5px solid var(--ink)",
             }}
           >
             <blockquote
-              style={{
-                margin: 0,
-                fontFamily: "var(--font-serif)",
-                fontSize: 36,
-                fontWeight: 400,
-                lineHeight: 1.25,
-                letterSpacing: "-0.02em",
-                color: "var(--ink)",
-              }}
+              className="display-h2"
+              style={{ lineHeight: 1.25 }}
             >
               A child is sent to the emergency room every{" "}
               <span style={{ color: "var(--oxide)" }}>24 minutes</span> by
@@ -208,33 +168,16 @@ export default function SafetyPage() {
       </section>
 
       {/* WHEN TO CALL ME */}
-      <section style={{ padding: "96px 0" }}>
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.2fr",
-            gap: 64,
-            alignItems: "flex-start",
-          }}
-        >
+      <section className="section-pad-lg" style={{ padding: "96px 0" }}>
+        <div className="container r-grid-2-narrow-wide" style={{ gap: 64 }}>
           <div
             style={{ display: "flex", flexDirection: "column", gap: 12 }}
           >
             <span className="overline">When to call me</span>
             <div className="rule-strong" />
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 36,
-                fontWeight: 400,
-                lineHeight: 1.15,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
-              I'd rather talk through it than have you install something that
-              won't hold.
+            <h2 className="display-h2">
+              I&apos;d rather talk through it than have you install something that
+              won&apos;t hold.
             </h2>
           </div>
           <aside
@@ -300,6 +243,7 @@ export default function SafetyPage() {
 
       {/* EXTERNAL RESOURCES */}
       <section
+        className="section-pad-md"
         style={{
           padding: "64px 0",
           background: "var(--linen)",
@@ -320,13 +264,7 @@ export default function SafetyPage() {
             <span className="overline">External resources</span>
             <div className="rule-strong" />
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: 24,
-            }}
-          >
+          <div className="r-grid-2">
             <ExternalLink
               href="https://www.anchorit.gov/"
               kicker="ANCHORIT.GOV"
@@ -344,27 +282,13 @@ export default function SafetyPage() {
       </section>
 
       {/* CTA STRIP */}
-      <section style={{ padding: "64px 0", background: "var(--bone)" }}>
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 48,
-            flexWrap: "wrap",
-          }}
-        >
+      <section
+        className="section-pad-md"
+        style={{ padding: "64px 0", background: "var(--bone)" }}
+      >
+        <div className="container r-flex-cta">
           <div>
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 32,
-                fontWeight: 400,
-                margin: 0,
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <h2 className="display-h3">
               Anchoring is the price of safe furniture. Every cover gets it.
             </h2>
           </div>

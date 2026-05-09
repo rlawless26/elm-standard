@@ -39,6 +39,11 @@ export const metadata: Metadata = {
   description: "Custom radiator covers, handbuilt in Milton, MA.",
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
 export default function RootLayout({
   children,
 }: {

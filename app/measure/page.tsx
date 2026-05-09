@@ -72,7 +72,7 @@ export default function MeasurePage() {
   return (
     <main>
       {/* HERO */}
-      <section style={{ padding: "96px 0 48px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 48px" }}>
         <div className="container">
           <div
             style={{
@@ -84,16 +84,7 @@ export default function MeasurePage() {
           >
             <span className="overline">Measuring guide</span>
             <div className="rule-strong" />
-            <h1
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 56,
-                fontWeight: 400,
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
+            <h1 className="display-h1">
               Five measurements. Ten minutes. The cover only fits if these are
               right.
             </h1>
@@ -102,16 +93,8 @@ export default function MeasurePage() {
       </section>
 
       {/* INTRO + SUPPLIES — two column */}
-      <section style={{ padding: "32px 0 64px" }}>
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.1fr 1fr",
-            gap: 64,
-            alignItems: "flex-start",
-          }}
-        >
+      <section className="section-pad-md" style={{ padding: "32px 0 64px" }}>
+        <div className="container r-grid-hero" style={{ alignItems: "flex-start" }}>
           <div
             className="prose"
             style={{ display: "flex", flexDirection: "column", gap: 18 }}
@@ -234,16 +217,7 @@ export default function MeasurePage() {
           >
             <span className="overline">Watch the video</span>
             <div className="rule-strong" />
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 36,
-                fontWeight: 400,
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
+            <h2 className="display-h2">
               Ninety seconds. Five measurements. One radiator.
             </h2>
           </div>
@@ -282,16 +256,7 @@ export default function MeasurePage() {
           >
             <span className="overline">The five measurements</span>
             <div className="rule-strong" />
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 40,
-                fontWeight: 400,
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
+            <h2 className="display-h2">
               Take them in order. Write them down. Photograph the radiator.
             </h2>
           </div>
@@ -299,10 +264,8 @@ export default function MeasurePage() {
             {steps.map((s, i) => (
               <div
                 key={s.n}
+                className="r-grid-step"
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "120px 1fr 1fr 180px",
-                  gap: 48,
                   padding: "36px 0",
                   borderTop: "1px solid var(--hairline)",
                   borderBottom:
@@ -320,17 +283,7 @@ export default function MeasurePage() {
                 >
                   STEP {s.n}
                 </span>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontSize: 32,
-                    fontWeight: 400,
-                    margin: 0,
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  {s.title}
-                </h3>
+                <h3 className="display-h3">{s.title}</h3>
                 <p
                   style={{
                     fontFamily: "var(--font-serif)",
@@ -362,6 +315,7 @@ export default function MeasurePage() {
 
       {/* COMPLICATIONS CALLOUT */}
       <section
+        className="section-pad-md"
         style={{
           padding: "64px 0",
           background: "var(--linen)",
@@ -369,16 +323,9 @@ export default function MeasurePage() {
           borderBottom: "1px solid var(--hairline)",
         }}
       >
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.4fr",
-            gap: 64,
-            alignItems: "flex-start",
-          }}
-        >
+        <div className="container r-grid-2-narrow-wide" style={{ gap: 64 }}>
           <div
+            className="sticky-desktop"
             style={{
               display: "flex",
               flexDirection: "column",
@@ -390,13 +337,8 @@ export default function MeasurePage() {
             <span className="overline">Pipes, valves, complications</span>
             <div className="rule-strong" />
             <h2
+              className="display-h2"
               style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 36,
-                fontWeight: 400,
-                lineHeight: 1.15,
-                letterSpacing: "-0.02em",
-                margin: 0,
               }}
             >
               Most radiators have at least one. None of them are dealbreakers
@@ -496,7 +438,7 @@ export default function MeasurePage() {
       </section>
 
       {/* WHEN IN DOUBT, ASK */}
-      <section style={{ padding: "96px 0" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0" }}>
         <div
           className="container"
           style={{
@@ -508,17 +450,8 @@ export default function MeasurePage() {
         >
           <span className="overline">When in doubt, ask</span>
           <div className="rule-strong" />
-          <h2
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 36,
-              fontWeight: 400,
-              lineHeight: 1.15,
-              letterSpacing: "-0.02em",
-              margin: 0,
-            }}
-          >
-            I'd rather chat for five minutes now than rebuild a cover later.
+          <h2 className="display-h2">
+            I&apos;d rather chat for five minutes now than rebuild a cover later.
           </h2>
           <p
             style={{
@@ -548,6 +481,7 @@ export default function MeasurePage() {
 
       {/* CTA STRIP */}
       <section
+        className="section-pad-md"
         style={{
           padding: "64px 0",
           background: "var(--canvas)",
@@ -555,42 +489,22 @@ export default function MeasurePage() {
           borderBottom: "1px solid var(--hairline)",
         }}
       >
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 48,
-            flexWrap: "wrap",
-          }}
-        >
+        <div className="container r-flex-cta">
           <div>
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 32,
-                fontWeight: 400,
-                margin: 0,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Print, measure, and send.
-            </h2>
+            <h2 className="display-h3">Print, measure, and send.</h2>
             <p
               style={{
                 fontFamily: "var(--font-serif)",
                 fontSize: 17,
                 color: "var(--ink-2)",
                 marginTop: 8,
-                margin: 0,
               }}
             >
               Worksheets cover the most common radiator situations.
               Pencil-fillable, one page each.
             </p>
           </div>
-          <div style={{ display: "flex", gap: 14 }}>
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
             <Link href="/worksheets" className="btn-outline">
               Print the worksheet (PDF) →
             </Link>
