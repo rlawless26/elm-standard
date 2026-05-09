@@ -43,51 +43,27 @@ export default function HomePage() {
     <main>
       {/* HERO — mesh-dot ground references the brass mesh of the covers */}
       <section
-        className="mesh-ground"
+        className="mesh-ground section-pad-lg"
         style={{ padding: "64px 0 96px", background: "var(--bone)" }}
       >
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.1fr 1fr",
-            gap: 64,
-            alignItems: "center",
-          }}
-        >
+        <div className="container r-grid-hero">
           <div
             style={{ display: "flex", flexDirection: "column", gap: 28 }}
           >
             <span className="overline">
               Custom radiator covers · Milton, MA
             </span>
-            <h1
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 64,
-                fontWeight: 400,
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-                color: "var(--ink)",
-                margin: 0,
-              }}
-            >
+            <h1 className="display-hero">
               Radiator covers, handbuilt to fit.
             </h1>
             <p
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 20,
-                lineHeight: 1.6,
-                color: "var(--ink-2)",
-                maxWidth: 520,
-                margin: 0,
-              }}
+              className="lead-fluid"
+              style={{ maxWidth: 520 }}
             >
               Built to your radiator&apos;s exact size. Three styles, three
               screens, your trim color. Local delivery or flat-pack shipping.
             </p>
-            <div style={{ display: "flex", gap: 14, marginTop: 8 }}>
+            <div style={{ display: "flex", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
               <Link href="/quote" className="btn-primary">
                 Get a quote
               </Link>
@@ -134,6 +110,7 @@ export default function HomePage() {
 
       {/* THREE STYLES PREVIEW */}
       <section
+        className="section-pad-lg"
         style={{
           padding: "96px 0",
           background: "var(--paper)",
@@ -153,26 +130,13 @@ export default function HomePage() {
             <span className="overline">Three styles</span>
             <div className="rule-strong" />
             <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 40,
-                fontWeight: 400,
-                lineHeight: 1.1,
-                letterSpacing: "-0.02em",
-                margin: 0,
-                maxWidth: 720,
-              }}
+              className="display-h2"
+              style={{ maxWidth: 720 }}
             >
               All the same materials. Pick the one that fits the room.
             </h2>
           </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: 24,
-            }}
-          >
+          <div className="r-grid-3">
             {stylesPreview.map((s) => (
               <Link
                 key={s.name}
@@ -232,14 +196,13 @@ export default function HomePage() {
       </section>
 
       {/* VALUE PROP */}
-      <section style={{ padding: "96px 0", background: "var(--bone)" }}>
+      <section
+        className="section-pad-lg"
+        style={{ padding: "96px 0", background: "var(--bone)" }}
+      >
         <div
-          className="container"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 48,
-          }}
+          className="container r-grid-3"
+          style={{ gap: 48 }}
         >
           {valueProps.map(([h, p]) => (
             <div
@@ -278,7 +241,7 @@ export default function HomePage() {
 
       {/* CTA BAND */}
       <section
-        className="mesh-ground"
+        className="mesh-ground section-pad-lg"
         style={{
           padding: "96px 0",
           background: "var(--canvas)",
@@ -286,26 +249,9 @@ export default function HomePage() {
           borderBottom: "1px solid var(--hairline)",
         }}
       >
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 48,
-          }}
-        >
+        <div className="container r-flex-cta">
           <div>
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 44,
-                fontWeight: 400,
-                margin: 0,
-                color: "var(--ink)",
-                letterSpacing: "-0.02em",
-              }}
-            >
+            <h2 className="display-h2">
               Ready for a cover that fits?
             </h2>
             <p
@@ -314,7 +260,6 @@ export default function HomePage() {
                 fontSize: 18,
                 color: "var(--ink-2)",
                 marginTop: 12,
-                margin: 0,
               }}
             >
               Tell me about your radiator. I&apos;ll have a quote back to you

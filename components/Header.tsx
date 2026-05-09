@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import Wordmark from "./Wordmark";
 
 const NAV: Array<{ label: string; href: string }> = [
@@ -13,6 +14,19 @@ const NAV: Array<{ label: string; href: string }> = [
 
 export default function Header() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <header
@@ -41,7 +55,7 @@ export default function Header() {
           <Wordmark size={16} />
         </Link>
 
-        <nav style={{ display: "flex", gap: 32, alignItems: "center" }}>
+        <nav className="nav-desktop">
           {NAV.map(({ label, href }) => {
             const active = pathname === href;
             return (
@@ -69,7 +83,49 @@ export default function Header() {
             Get a quote
           </Link>
         </nav>
+
+        <button
+          type="button"
+          className="nav-mobile-toggle"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-nav-panel"
+          onClick={() => setOpen((v) => !v)}
+        >
+          <span className="bar" />
+        </button>
       </div>
+
+      {open ? (
+        <div
+          id="mobile-nav-panel"
+          className="nav-mobile-panel"
+          role="dialog"
+          aria-label="Site navigation"
+        >
+          {NAV.map(({ label, href }) => {
+            const active = pathname === href;
+            return (
+              <Link
+                key={href}
+                href={href}
+                className="nav-mobile-link"
+                data-active={active ? "true" : "false"}
+                onClick={() => setOpen(false)}
+              >
+                {label}
+              </Link>
+            );
+          })}
+          <Link
+            href="/quote"
+            className="btn-primary nav-mobile-cta"
+            onClick={() => setOpen(false)}
+          >
+            Get a quote
+          </Link>
+        </div>
+      ) : null}
     </header>
   );
 }

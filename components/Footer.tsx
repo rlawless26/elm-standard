@@ -38,6 +38,7 @@ function FooterCol({ title, links }: FooterColProps) {
 export default function Footer() {
   return (
     <footer
+      className="section-pad-md"
       style={{
         background: "var(--linen)",
         borderTop: "1px solid var(--hairline)",
@@ -45,15 +46,11 @@ export default function Footer() {
         padding: "64px 0 32px",
       }}
     >
-      <div
-        className="container"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1.6fr 1fr 1fr 1fr 1fr",
-          gap: 40,
-        }}
-      >
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div className="container footer-grid">
+        <div
+          className="footer-brand"
+          style={{ display: "flex", flexDirection: "column", gap: 16 }}
+        >
           <Wordmark size={18} />
           <div
             style={{
@@ -105,13 +102,11 @@ export default function Footer() {
       </div>
 
       <div
-        className="container"
+        className="container footer-grid-bottom"
         style={{
           marginTop: 64,
           paddingTop: 24,
           borderTop: "1px solid var(--hairline)",
-          display: "flex",
-          justifyContent: "space-between",
           fontFamily: "var(--font-mono)",
           fontSize: 12,
           color: "var(--ink-3)",

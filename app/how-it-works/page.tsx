@@ -43,7 +43,7 @@ const steps: Step[] = [
 export default function HowItWorksPage() {
   return (
     <main>
-      <section style={{ padding: "96px 0 48px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 48px" }}>
         <div className="container">
           <div
             style={{
@@ -55,27 +55,10 @@ export default function HowItWorksPage() {
           >
             <span className="overline">How it works</span>
             <div className="rule-strong" />
-            <h1
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 56,
-                fontWeight: 400,
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-                margin: 0,
-              }}
-            >
+            <h1 className="display-h1">
               Four steps. About six weeks, start to finish.
             </h1>
-            <p
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 20,
-                lineHeight: 1.55,
-                color: "var(--ink-2)",
-                margin: 0,
-              }}
-            >
+            <p className="lead-fluid">
               Most covers go from first measurement to installed in 4–6 weeks.
               Flat-pack ships in 2–3 weeks.
             </p>
@@ -83,7 +66,7 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      <section style={{ padding: "48px 0 96px" }}>
+      <section className="section-pad-lg" style={{ padding: "48px 0 96px" }}>
         <div
           className="container"
           style={{ display: "flex", flexDirection: "column", gap: 0 }}
@@ -91,10 +74,8 @@ export default function HowItWorksPage() {
           {steps.map((s, i) => (
             <div
               key={s.n}
+              className="r-grid-step-3"
               style={{
-                display: "grid",
-                gridTemplateColumns: "120px 1fr 1fr",
-                gap: 48,
                 padding: "40px 0",
                 borderTop: "1px solid var(--hairline)",
                 borderBottom:
@@ -112,17 +93,7 @@ export default function HowItWorksPage() {
               >
                 STEP {s.n}
               </span>
-              <h3
-                style={{
-                  fontFamily: "var(--font-serif)",
-                  fontSize: 36,
-                  fontWeight: 400,
-                  margin: 0,
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                {s.title}
-              </h3>
+              <h3 className="display-h3">{s.title}</h3>
               <div
                 style={{ display: "flex", flexDirection: "column", gap: 12 }}
               >
@@ -161,33 +132,16 @@ export default function HowItWorksPage() {
       </section>
 
       <section
+        className="section-pad-lg"
         style={{
           padding: "64px 0 128px",
           background: "var(--paper)",
           borderTop: "1px solid var(--hairline)",
         }}
       >
-        <div
-          className="container"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 48,
-          }}
-        >
+        <div className="container r-flex-cta">
           <div>
-            <h2
-              style={{
-                fontFamily: "var(--font-serif)",
-                fontSize: 36,
-                fontWeight: 400,
-                margin: 0,
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Got a radiator? Start with a quote.
-            </h2>
+            <h2 className="display-h2">Got a radiator? Start with a quote.</h2>
           </div>
           <Link href="/quote" className="btn-primary">
             Get a quote

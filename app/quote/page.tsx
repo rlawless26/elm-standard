@@ -250,15 +250,7 @@ export default function QuotePage() {
         >
           <span className="overline">Quote requested</span>
           <div className="rule-strong" />
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 48,
-              fontWeight: 400,
-              margin: 0,
-              letterSpacing: "-0.02em",
-            }}
-          >
+          <h1 className="display-h1">
             Got it. I&apos;ll be in touch within two days.
           </h1>
           <p
@@ -292,30 +284,14 @@ export default function QuotePage() {
   return (
     <main>
       {/* HERO */}
-      <section style={{ padding: "96px 0 32px" }}>
+      <section className="section-pad-lg" style={{ padding: "96px 0 32px" }}>
         <div className="container" style={{ maxWidth: 820 }}>
           <span className="overline">Build your cover</span>
           <div className="rule-strong" style={{ margin: "12px 0" }} />
-          <h1
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 56,
-              fontWeight: 400,
-              margin: 0,
-              letterSpacing: "-0.02em",
-              lineHeight: 1.05,
-            }}
-          >
-            Configure your cover.
-          </h1>
+          <h1 className="display-h1">Configure your cover.</h1>
           <p
-            style={{
-              fontFamily: "var(--font-serif)",
-              fontSize: 19,
-              color: "var(--ink-2)",
-              marginTop: 16,
-              lineHeight: 1.55,
-            }}
+            className="lead-fluid"
+            style={{ marginTop: 16 }}
           >
             Pick a style, choose a screen, send me your dimensions, and tell
             me how you want it. I&apos;ll come back with a quote in two
@@ -325,7 +301,7 @@ export default function QuotePage() {
       </section>
 
       {/* CONFIGURATOR */}
-      <section style={{ padding: "32px 0 96px" }}>
+      <section className="section-pad-lg" style={{ padding: "32px 0 96px" }}>
         <div className="container">
           <form onSubmit={onSubmit} className="quote-layout">
             {/* LEFT — STEPS */}
@@ -568,13 +544,7 @@ export default function QuotePage() {
                     Need help measuring? Watch the 90-second guide →
                   </Link>
                 </p>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(3, 1fr)",
-                    gap: 24,
-                  }}
-                >
+                <div className="r-grid-3" style={{ gap: 24 }}>
                   <Field
                     label="Length (in)"
                     value={config.length}
@@ -663,13 +633,7 @@ export default function QuotePage() {
 
               {/* STEP 06 — CONTACT */}
               <Step num="06" heading="About you">
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: 24,
-                  }}
-                >
+                <div className="r-grid-2" style={{ gap: 24 }}>
                   <Field
                     label="Your name"
                     value={config.name}
