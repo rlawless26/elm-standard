@@ -212,7 +212,7 @@ function buildMailto(config: Config): string {
   )}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
-type SubmitError = "generic" | "network" | "rate" | null;
+type SubmitError = "generic" | "network" | "rate" | "stripe" | null;
 
 export function Configurator({ pricing }: { pricing: PricingConfig }) {
   const [config, setConfig] = useState<Config>(initialConfig);
@@ -239,6 +239,77 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
     [config, pricing],
   );
 
+  // Contact-form section appears only on the over-cap path, where the
+  // request gets emailed via /api/quote. For ready configs, Stripe Checkout
+  // collects email/name. While the user is still configuring (incomplete),
+  // nothing yet to contact about.
+  const showContact = priceResult.kind === "over_cap";
+
+  // CTA disabled state — user shouldn't be able to submit incomplete configs.
+  const ctaDisabled = priceResult.kind === "incomplete" || submitting;
+
+  const submitDeposit = async () => {
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        style: config.style,
+        screen: config.screen,
+        color: config.color,
+        length: config.length,
+        depth: config.depth,
+        height: config.height,
+        delivery: config.delivery,
+        notes: config.notes,
+        email: config.email,
+      }),
+    });
+    const json = (await res.json().catch(() => null)) as
+      | { ok: boolean; url?: string; error?: string }
+      | null;
+
+    if (res.status === 429) {
+      setError("rate");
+      setSubmitting(false);
+      return;
+    }
+    if (!res.ok || !json?.ok || !json.url) {
+      setError(json?.error === "stripe_not_configured" ? "stripe" : "generic");
+      setSubmitting(false);
+      return;
+    }
+    // Hand the user off to Stripe.
+    window.location.href = json.url;
+  };
+
+  const submitQuoteRequest = async () => {
+    const res = await fetch("/api/quote", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ...config, company: honeypot }),
+    });
+    const json = (await res.json().catch(() => null)) as
+      | { ok: boolean; errors?: Record<string, string>; error?: string }
+      | null;
+
+    if (res.status === 429) {
+      setError("rate");
+      setSubmitting(false);
+      return;
+    }
+    if (res.status === 400 && json?.errors) {
+      setFieldErrors(json.errors);
+      setSubmitting(false);
+      return;
+    }
+    if (!res.ok || !json?.ok) {
+      setError("generic");
+      setSubmitting(false);
+      return;
+    }
+    setSubmitted(true);
+  };
+
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (submitting) return;
@@ -247,32 +318,14 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
     setFieldErrors({});
 
     try {
-      const res = await fetch("/api/quote", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...config, company: honeypot }),
-      });
-      const json = (await res.json().catch(() => null)) as
-        | { ok: boolean; errors?: Record<string, string>; error?: string }
-        | null;
-
-      if (res.status === 429) {
-        setError("rate");
+      if (priceResult.kind === "ready") {
+        await submitDeposit();
+      } else if (priceResult.kind === "over_cap") {
+        await submitQuoteRequest();
+      } else {
+        // Incomplete — shouldn't happen with disabled button, but guard anyway.
         setSubmitting(false);
-        return;
       }
-      if (res.status === 400 && json?.errors) {
-        setFieldErrors(json.errors);
-        setSubmitting(false);
-        return;
-      }
-      if (!res.ok || !json?.ok) {
-        setError("generic");
-        setSubmitting(false);
-        return;
-      }
-
-      setSubmitted(true);
     } catch {
       setError("network");
       setSubmitting(false);
@@ -711,47 +764,55 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                 </div>
               </div>
 
-              {/* CONTACT */}
-              <div className="config-section">
-                <span className="overline">About you</span>
-                <div className="r-grid-2" style={{ gap: 24 }}>
+              {/* CONTACT — visible only on the over-cap (email-quote) path.
+                  When the price is ready, Stripe Checkout collects email/name. */}
+              {showContact ? (
+                <div className="config-section">
+                  <span className="overline">About you</span>
+                  <p className="config-help">
+                    Your dimensions are larger than the standard range, so
+                    I&apos;ll send a one-page quote rather than checking you
+                    out instantly. Tell me how to reach you.
+                  </p>
+                  <div className="r-grid-2" style={{ gap: 24 }}>
+                    <Field
+                      label="Your name"
+                      value={config.name}
+                      onChange={(v) => update("name", v)}
+                      placeholder="Jane Quincy"
+                      required
+                    />
+                    <Field
+                      label="Email"
+                      value={config.email}
+                      onChange={(v) => update("email", v)}
+                      placeholder="jane@example.com"
+                      required
+                      type="email"
+                    />
+                  </div>
                   <Field
-                    label="Your name"
-                    value={config.name}
-                    onChange={(v) => update("name", v)}
-                    placeholder="Jane Quincy"
-                    required
+                    label="Zip code"
+                    value={config.zip}
+                    onChange={(v) => update("zip", v)}
+                    placeholder="02186"
+                    mono
                   />
-                  <Field
-                    label="Email"
-                    value={config.email}
-                    onChange={(v) => update("email", v)}
-                    placeholder="jane@example.com"
-                    required
-                    type="email"
-                  />
+                  <div>
+                    <label className="field-label" style={{ display: "block" }}>
+                      Anything else?{" "}
+                      <span style={{ color: "var(--ink-4)" }}>(optional)</span>
+                    </label>
+                    <textarea
+                      value={config.notes}
+                      onChange={(e) => update("notes", e.target.value)}
+                      rows={3}
+                      placeholder="Pipes in odd places, window recess, tile floor, deadline — anything I should know."
+                      className="config-textarea"
+                    />
+                  </div>
                 </div>
-                <Field
-                  label="Zip code"
-                  value={config.zip}
-                  onChange={(v) => update("zip", v)}
-                  placeholder="02186"
-                  mono
-                />
-                <div>
-                  <label className="field-label" style={{ display: "block" }}>
-                    Anything else?{" "}
-                    <span style={{ color: "var(--ink-4)" }}>(optional)</span>
-                  </label>
-                  <textarea
-                    value={config.notes}
-                    onChange={(e) => update("notes", e.target.value)}
-                    rows={3}
-                    placeholder="Pipes in odd places, window recess, tile floor, deadline — anything I should know."
-                    className="config-textarea"
-                  />
-                </div>
-              </div>
+              ) : null}
 
               {/* HONEYPOT */}
               <div
@@ -828,6 +889,18 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                       One submission per minute, please. Wait a moment and try
                       again.
                     </>
+                  ) : error === "stripe" ? (
+                    <>
+                      Checkout isn&apos;t connected yet. Email me directly and
+                      I&apos;ll get you sorted:{" "}
+                      <a
+                        href={buildMailto(config)}
+                        className="oxide-link"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        send via email →
+                      </a>
+                    </>
                   ) : (
                     <>
                       Something broke on my end. Try again in a minute, or
@@ -855,23 +928,28 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                 <button
                   type="submit"
                   className="btn-primary config-cta"
-                  disabled={submitting}
-                  style={{ opacity: submitting ? 0.6 : 1 }}
+                  disabled={ctaDisabled}
+                  style={{ opacity: ctaDisabled ? 0.5 : 1 }}
                 >
-                  {priceResult.kind === "over_cap"
-                    ? submitting
-                      ? "Sending..."
-                      : "Request custom quote →"
-                    : submitting
-                      ? "Sending..."
-                      : "Request quote →"}
+                  {ctaLabel(priceResult, submitting)}
                 </button>
                 {priceResult.kind === "ready" ? (
-                  <PriceBreakdownDisplay result={priceResult} />
+                  <>
+                    <PriceBreakdownDisplay result={priceResult} />
+                    <div
+                      className="trust-band"
+                      style={{ borderTop: "none", paddingTop: 0, marginTop: 0 }}
+                    >
+                      30% deposit today, balance due at{" "}
+                      {config.delivery === "local" ? "install" : "shipment"}.
+                    </div>
+                  </>
                 ) : null}
                 <div className="trust-band">
-                  ✓ Measured to fit · ✓ Built in Milton, MA · ✓ Quote in 2
-                  days
+                  ✓ Measured to fit · ✓ Built in Milton, MA ·{" "}
+                  {priceResult.kind === "ready"
+                    ? "✓ 2-week build time"
+                    : "✓ Quote in 2 days"}
                 </div>
               </div>
             </div>
@@ -880,6 +958,20 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
       </section>
     </main>
   );
+}
+
+function ctaLabel(result: PriceResult, submitting: boolean): string {
+  if (submitting) {
+    return result.kind === "ready" ? "Sending you to Stripe..." : "Sending...";
+  }
+  if (result.kind === "ready") {
+    const depositDollars = Math.round((result.total * 30) / 100);
+    return `Reserve your build — $${depositDollars.toLocaleString()} deposit →`;
+  }
+  if (result.kind === "over_cap") {
+    return "Request custom quote →";
+  }
+  return "Configure to continue";
 }
 
 function PriceLine({ result }: { result: PriceResult }) {

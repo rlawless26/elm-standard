@@ -64,3 +64,40 @@ values ('00000000-0000-0000-0000-000000000001'::uuid)
 on conflict (id) do nothing;
 
 alter table public.pricing_config enable row level security;
+
+
+-- =========================================================================
+-- orders: confirmed orders that paid a deposit via Stripe Checkout. The
+-- /api/checkout route creates a Stripe session, then either the Stripe
+-- webhook (on checkout.session.completed) or the /quote/success page
+-- inserts the row — whichever fires first. The unique constraint on
+-- stripe_session_id makes both paths idempotent.
+-- =========================================================================
+
+create table if not exists public.orders (
+  id                     uuid        primary key default gen_random_uuid(),
+  created_at             timestamptz not null default now(),
+  stripe_session_id      text        unique not null,
+  stripe_payment_intent  text,
+  total_price_cents      integer     not null check (total_price_cents > 0),
+  deposit_paid_cents     integer     not null check (deposit_paid_cents > 0),
+  balance_due_cents      integer     not null check (balance_due_cents >= 0),
+  customer_email         text,
+  customer_name          text,
+  style                  text        not null check (style in ('traditional','shaker','modern')),
+  screen                 text        not null check (screen in ('grecian','cloverleaf','windsor','grecian-brass')),
+  paint_color            text        check (paint_color is null or paint_color in ('super-white','paper-white','chantilly-lace','custom')),
+  length_in              numeric     not null check (length_in > 0),
+  depth_in               numeric     not null check (depth_in > 0),
+  height_in              numeric     not null check (height_in > 0),
+  delivery               text        not null check (delivery in ('local','flatpack')),
+  notes                  text,
+  status                 text        not null default 'deposit_paid'
+                         check (status in ('deposit_paid','in_build','ready','delivered','cancelled','refunded')),
+  internal_notes         text
+);
+
+create index if not exists orders_created_at_idx on public.orders (created_at desc);
+create index if not exists orders_status_idx     on public.orders (status);
+
+alter table public.orders enable row level security;
