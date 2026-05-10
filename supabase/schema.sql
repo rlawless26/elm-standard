@@ -84,6 +84,13 @@ create table if not exists public.orders (
   balance_due_cents      integer     not null check (balance_due_cents >= 0),
   customer_email         text,
   customer_name          text,
+  customer_phone         text,
+  shipping_line1         text,
+  shipping_line2         text,
+  shipping_city          text,
+  shipping_state         text,
+  shipping_postal_code   text,
+  shipping_country       text,
   style                  text        not null check (style in ('traditional','shaker','modern')),
   screen                 text        not null check (screen in ('grecian','cloverleaf','windsor','grecian-brass')),
   paint_color            text        check (paint_color is null or paint_color in ('super-white','paper-white','chantilly-lace','custom')),
@@ -96,6 +103,16 @@ create table if not exists public.orders (
                          check (status in ('deposit_paid','in_build','ready','delivered','cancelled','refunded')),
   internal_notes         text
 );
+
+-- Idempotent column additions for existing orders tables that predate the
+-- shipping/phone columns. Safe to re-run.
+alter table public.orders add column if not exists customer_phone       text;
+alter table public.orders add column if not exists shipping_line1       text;
+alter table public.orders add column if not exists shipping_line2       text;
+alter table public.orders add column if not exists shipping_city        text;
+alter table public.orders add column if not exists shipping_state       text;
+alter table public.orders add column if not exists shipping_postal_code text;
+alter table public.orders add column if not exists shipping_country     text;
 
 create index if not exists orders_created_at_idx on public.orders (created_at desc);
 create index if not exists orders_status_idx     on public.orders (status);

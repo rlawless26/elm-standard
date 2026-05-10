@@ -154,6 +154,13 @@ export async function POST(req: Request) {
       mode: "payment",
       payment_method_types: ["card"],
       customer_email: looksLikeEmail ? emailHint : undefined,
+      // Collect a real address (for install scheduling or shipment) + phone.
+      shipping_address_collection: {
+        allowed_countries: ["US"],
+      },
+      phone_number_collection: {
+        enabled: true,
+      },
       line_items: [
         {
           price_data: {

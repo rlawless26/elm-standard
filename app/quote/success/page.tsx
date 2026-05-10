@@ -40,6 +40,7 @@ export default async function QuoteSuccessPage({ searchParams }: Props) {
     deposit: number;
     balance: number;
     customer_email: string | null;
+    shipping_address: string | null;
   } | null = null;
 
   try {
@@ -56,6 +57,15 @@ export default async function QuoteSuccessPage({ searchParams }: Props) {
       } else {
         outcome = "ok";
         const m = session.metadata ?? {};
+        const addr =
+          session.collected_information?.shipping_details?.address ?? null;
+        const addrLines = [
+          addr?.line1,
+          addr?.line2,
+          [addr?.city, addr?.state, addr?.postal_code]
+            .filter(Boolean)
+            .join(" "),
+        ].filter(Boolean);
         summary = {
           style: m.style as StyleCode,
           screen: m.screen as ScreenCode,
@@ -68,6 +78,7 @@ export default async function QuoteSuccessPage({ searchParams }: Props) {
           deposit: Number(m.deposit_paid_cents) / 100,
           balance: Number(m.balance_due_cents) / 100,
           customer_email: session.customer_details?.email ?? null,
+          shipping_address: addrLines.length ? addrLines.join("\n") : null,
         };
       }
     }
@@ -158,6 +169,12 @@ export default async function QuoteSuccessPage({ searchParams }: Props) {
         />
         <Row label="Size" value={dims} />
         <Row label="Delivery" value={DELIVERY_LABEL[summary.delivery]} />
+        {summary.shipping_address ? (
+          <Row
+            label={summary.delivery === "local" ? "Install at" : "Ship to"}
+            value={summary.shipping_address}
+          />
+        ) : null}
         <div
           style={{
             marginTop: 12,
@@ -237,6 +254,7 @@ function Row({ label, value }: { label: string; value: string }) {
           fontFamily: "var(--font-sans)",
           fontSize: 14,
           color: "var(--ink)",
+          whiteSpace: "pre-line",
         }}
       >
         {value}

@@ -66,7 +66,14 @@ export async function recordOrderFromSession(
   }
 
   const customerEmail = session.customer_details?.email ?? null;
-  const customerName = session.customer_details?.name ?? null;
+  // Shipping is the install/ship address; fall back to billing name only
+  // if Stripe didn't get one on the shipping form. In the current Stripe
+  // SDK, shipping_details lives under `collected_information`.
+  const shipping = session.collected_information?.shipping_details ?? null;
+  const customerName =
+    shipping?.name ?? session.customer_details?.name ?? null;
+  const customerPhone = session.customer_details?.phone ?? null;
+  const address = shipping?.address ?? null;
 
   const paymentIntent =
     typeof session.payment_intent === "string"
@@ -81,6 +88,13 @@ export async function recordOrderFromSession(
     balance_due_cents: Number(m.balance_due_cents),
     customer_email: customerEmail,
     customer_name: customerName,
+    customer_phone: customerPhone,
+    shipping_line1: address?.line1 ?? null,
+    shipping_line2: address?.line2 ?? null,
+    shipping_city: address?.city ?? null,
+    shipping_state: address?.state ?? null,
+    shipping_postal_code: address?.postal_code ?? null,
+    shipping_country: address?.country ?? null,
     style: m.style as StyleCode,
     screen: m.screen as ScreenCode,
     paint_color: (m.paint_color || null) as PaintCode | null,
@@ -131,6 +145,13 @@ async function sendDepositReceiptEmails(
     deposit_paid_cents: number;
     balance_due_cents: number;
     customer_name: string | null;
+    customer_phone: string | null;
+    shipping_line1: string | null;
+    shipping_line2: string | null;
+    shipping_city: string | null;
+    shipping_state: string | null;
+    shipping_postal_code: string | null;
+    shipping_country: string | null;
   },
   id: string,
   customerEmail: string | null,
@@ -151,6 +172,21 @@ async function sendDepositReceiptEmails(
   const depositUSD = (row.deposit_paid_cents / 100).toFixed(2);
   const balanceUSD = (row.balance_due_cents / 100).toFixed(2);
 
+  const addressLines: string[] = [];
+  if (row.shipping_line1) addressLines.push(row.shipping_line1);
+  if (row.shipping_line2) addressLines.push(row.shipping_line2);
+  const cityLine = [row.shipping_city, row.shipping_state]
+    .filter(Boolean)
+    .join(", ");
+  const cityZip = [cityLine, row.shipping_postal_code]
+    .filter(Boolean)
+    .join(" ");
+  if (cityZip) addressLines.push(cityZip);
+  const formattedAddress = addressLines.length ? addressLines.join("\n          ") : "(not provided)";
+
+  const deliveryLine =
+    row.delivery === "local" ? "Install at" : "Ship to";
+
   const customerLines = [
     `Thanks${row.customer_name ? `, ${row.customer_name}` : ""} — your radiator cover is reserved.`,
     "",
@@ -168,6 +204,8 @@ async function sendDepositReceiptEmails(
     `Deposit:  $${depositUSD} (paid)`,
     `Balance:  $${balanceUSD} (due at ${row.delivery === "local" ? "install" : "shipment"})`,
     "",
+    `${deliveryLine}: ${formattedAddress}`,
+    "",
     "I'll be in touch within two business days to confirm the final dimensions before I cut. Reply to this email if anything changes.",
     "",
     "— Rob",
@@ -184,6 +222,7 @@ async function sendDepositReceiptEmails(
       : `Color:    (to confirm)`,
     `Size:     ${dims}`,
     `Delivery: ${DELIVERY_LABEL[row.delivery]}`,
+    `${deliveryLine}: ${formattedAddress}`,
     "",
     `Total:    $${totalUSD}`,
     `Deposit:  $${depositUSD}`,
@@ -192,6 +231,7 @@ async function sendDepositReceiptEmails(
     row.notes ? `Notes:    ${row.notes}` : "",
     "",
     `Customer: ${row.customer_name ?? "—"} ${customerEmail ?? ""}`.trim(),
+    row.customer_phone ? `Phone:    ${row.customer_phone}` : "",
     "",
     `Open: ${siteUrl.replace(/\/$/, "")}/admin/orders/${id}`,
   ].filter(Boolean);
