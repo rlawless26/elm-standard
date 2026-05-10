@@ -974,15 +974,14 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
 }
 
 function ctaLabel(result: PriceResult, submitting: boolean): string {
-  if (submitting) {
-    return result.kind === "ready" ? "Sending you to Stripe..." : "Sending...";
-  }
   if (result.kind === "ready") {
+    // The deposit path redirects to Stripe almost instantly — no need for
+    // a label swap, the dimmed/disabled button is feedback enough.
     const depositDollars = Math.round((result.total * 30) / 100);
     return `Reserve your build — $${depositDollars.toLocaleString()} deposit →`;
   }
   if (result.kind === "over_cap") {
-    return "Request custom quote →";
+    return submitting ? "Sending..." : "Request custom quote →";
   }
   return "Configure to continue";
 }
