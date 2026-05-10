@@ -360,7 +360,8 @@ small, .small, .caption {
    FAQ accordion item hover background — adds 12px horizontal padding when hovered/open. */
 
 /* =========================================================
-   QUOTE CONFIGURATOR — responsive layout helpers
+   QUOTE CONFIGURATOR — PDP-shaped layout
+   Left: sticky gallery. Right: configurator + price + CTA.
    ========================================================= */
 
 .quote-layout {
@@ -371,8 +372,8 @@ small, .small, .caption {
 }
 @media (min-width: 880px) {
   .quote-layout {
-    grid-template-columns: minmax(0, 1fr) 360px;
-    gap: 48px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 64px;
   }
 }
 
@@ -384,6 +385,164 @@ small, .small, .caption {
     position: sticky;
     top: 96px;
   }
+}
+
+/* Gallery — sticky on desktop, stacked on mobile */
+.quote-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 880px) {
+  .quote-gallery {
+    position: sticky;
+    top: 96px;
+  }
+}
+.gallery-hero {
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.gallery-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.gallery-thumb {
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color 120ms, box-shadow 220ms;
+}
+.gallery-thumb:hover {
+  border-color: var(--ink-4);
+  box-shadow: var(--sh-1);
+}
+.gallery-thumb[data-selected="true"] {
+  border-color: var(--oxide);
+  box-shadow: 0 0 0 1px var(--oxide);
+}
+.gallery-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Config column */
+.quote-config {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+.config-title {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+.config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.config-help {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin: 0;
+}
+.config-help a { color: var(--oxide); border-bottom: 1px solid var(--oxide); }
+
+/* Trim-photo inline link, replaces a custom inline-styled button */
+.trim-photo-link {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--oxide);
+  color: var(--oxide);
+  cursor: pointer;
+  padding: 0 0 2px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+/* Screens use the same 3-col grid as style/paint — 4th item wraps. */
+
+/* Checkout block — build-up + CTA + trust band */
+.config-checkout {
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+.config-buildup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.config-buildup-spec {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+.config-buildup-price {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+.config-cta {
+  width: 100%;
+  justify-content: center;
+}
+.trust-band {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  border-top: 1px solid var(--hairline);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+/* Inline contact textarea — keep contact section visually compact */
+.config-textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--hairline);
+  background: var(--bone);
+  padding: 12px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--ink);
+  outline: none;
+  border-radius: 2px;
 }
 
 .card-grid-3 {

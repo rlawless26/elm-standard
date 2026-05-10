@@ -129,13 +129,35 @@ const DELIVERY: Array<{
 
 const PHOTO_NOTE_PREFILL = "I'll send a photo of my trim color.";
 
+const GALLERY: Array<{ src: string; alt: string }> = [
+  {
+    src: "/radiator-cover-isometric.png",
+    alt: "Radiator cover, isometric view",
+  },
+  { src: "/style-traditional.svg", alt: "Traditional cover, front elevation" },
+  { src: "/style-shaker.svg", alt: "Shaker cover, front elevation" },
+  { src: "/style-modern.svg", alt: "Modern cover, front elevation" },
+];
+
 function priceLabel(config: Config): string {
-  if (!config.delivery) return "Configuring...";
+  if (!config.delivery) return "Configure to see your estimate";
   const base = config.delivery === "local" ? 400 : 300;
   const upcharge =
     config.screen === "Grecian, painted brass" ? 50 : 0;
   const total = base + upcharge;
-  return `Estimated $${total}+ · final quote in 2 days`;
+  return `From $${total} · final quote in 2 days`;
+}
+
+function buildupSpec(config: Config): string {
+  const parts: string[] = [];
+  if (config.style) parts.push(`${config.style} cover`);
+  const dims = [config.length, config.depth, config.height];
+  if (dims.every(Boolean)) parts.push(`${dims.join('" × ')}"`);
+  if (config.color) parts.push(config.color);
+  if (config.delivery) {
+    parts.push(config.delivery === "local" ? "local install" : "flat-pack");
+  }
+  return parts.length ? parts.join(" · ") : "Your configuration";
 }
 
 function buildMailto(config: Config): string {
@@ -178,6 +200,7 @@ type SubmitError = "generic" | "network" | "rate" | null;
 
 export default function QuotePage() {
   const [config, setConfig] = useState<Config>(initialConfig);
+  const [galleryIndex, setGalleryIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<SubmitError>(null);
@@ -283,37 +306,88 @@ export default function QuotePage() {
 
   return (
     <main>
-      {/* HERO */}
-      <section className="section-pad-lg" style={{ padding: "96px 0 32px" }}>
-        <div className="container" style={{ maxWidth: 820 }}>
-          <span className="overline">Build your cover</span>
-          <div className="rule-strong" style={{ margin: "12px 0" }} />
-          <h1 className="display-h1">Configure your cover.</h1>
-          <p
-            className="lead-fluid"
-            style={{ marginTop: 16 }}
+      {/* THIN STRIP — overline, no big hero */}
+      <section style={{ padding: "48px 0 24px" }}>
+        <div className="container">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+              flexWrap: "wrap",
+            }}
           >
-            Pick a style, choose a screen, send me your dimensions, and tell
-            me how you want it. I&apos;ll come back with a quote in two
-            business days.
-          </p>
+            <span className="overline">Build your cover</span>
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: 11,
+                color: "var(--ink-4)",
+                letterSpacing: "0.04em",
+              }}
+            >
+              ·
+            </span>
+            <span
+              className="overline"
+              style={{ color: "var(--ink-3)", fontWeight: 400 }}
+            >
+              Custom · Milton, MA
+            </span>
+          </div>
         </div>
       </section>
 
-      {/* CONFIGURATOR */}
-      <section className="section-pad-lg" style={{ padding: "32px 0 96px" }}>
+      {/* PDP — gallery left, configurator right */}
+      <section style={{ paddingBottom: 96 }}>
         <div className="container">
           <form onSubmit={onSubmit} className="quote-layout">
-            {/* LEFT — STEPS */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 48,
-              }}
-            >
-              {/* STEP 01 — STYLE */}
-              <Step num="01" heading="Choose your style">
+            {/* LEFT — GALLERY */}
+            <div className="quote-gallery">
+              <div className="gallery-hero">
+                <Image
+                  src={GALLERY[galleryIndex].src}
+                  alt={GALLERY[galleryIndex].alt}
+                  width={720}
+                  height={540}
+                  priority
+                />
+              </div>
+              <div className="gallery-thumbs">
+                {GALLERY.map((g, i) => (
+                  <button
+                    type="button"
+                    key={g.src}
+                    onClick={() => setGalleryIndex(i)}
+                    data-selected={galleryIndex === i}
+                    aria-label={`View ${g.alt}`}
+                    className="gallery-thumb"
+                  >
+                    <Image src={g.src} alt="" width={120} height={90} />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* RIGHT — CONFIGURATOR */}
+            <div className="quote-config">
+              {/* TITLE */}
+              <div className="config-title">
+                <h1 className="display-h2" style={{ marginBottom: 0 }}>
+                  Made-to-fit radiator cover.
+                </h1>
+                <p
+                  className="lead-fluid"
+                  style={{ fontSize: "clamp(1rem, 0.4vw + 0.95rem, 1.125rem)" }}
+                >
+                  Three styles, three screens, your color. Built to your
+                  radiator&apos;s exact dimensions.
+                </p>
+              </div>
+
+              {/* STYLE */}
+              <div className="config-section">
+                <span className="overline">Style</span>
                 <div className="card-grid-3">
                   {STYLES.map((s) => (
                     <button
@@ -342,7 +416,7 @@ export default function QuotePage() {
                         <div
                           style={{
                             fontFamily: "var(--font-serif)",
-                            fontSize: 22,
+                            fontSize: 18,
                             fontWeight: 400,
                             letterSpacing: "-0.01em",
                             color: "var(--ink)",
@@ -365,22 +439,16 @@ export default function QuotePage() {
                     </button>
                   ))}
                 </div>
-              </Step>
+              </div>
 
-              {/* STEP 02 — SCREEN */}
-              <Step num="02" heading="Pick a screen">
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: 13,
-                    color: "var(--ink-3)",
-                    margin: "0 0 16px",
-                  }}
-                >
+              {/* SCREEN */}
+              <div className="config-section">
+                <span className="overline">Screen</span>
+                <p className="config-help">
                   Steel screens are painted to match your cover. The brass
                   option is an upgrade.
                 </p>
-                <div className="card-grid-4">
+                <div className="card-grid-3">
                   {SCREENS.map((s) => (
                     <button
                       type="button"
@@ -402,22 +470,31 @@ export default function QuotePage() {
                             padding: "3px 6px",
                             borderRadius: 2,
                             letterSpacing: "0.04em",
+                            zIndex: 1,
                           }}
                         >
                           +${s.upcharge}
                         </span>
                       ) : null}
-                      <Image
-                        src={s.img}
-                        alt={`${s.name} screen pattern swatch`}
-                        width={200}
-                        height={140}
+                      <div
                         style={{
-                          width: "100%",
-                          height: "auto",
-                          display: "block",
+                          background: "var(--bone)",
+                          border: "1px solid var(--hairline)",
+                          padding: 12,
                         }}
-                      />
+                      >
+                        <Image
+                          src={s.img}
+                          alt={`${s.name} screen pattern swatch`}
+                          width={200}
+                          height={140}
+                          style={{
+                            width: "100%",
+                            height: "auto",
+                            display: "block",
+                          }}
+                        />
+                      </div>
                       <div>
                         <div
                           style={{
@@ -446,21 +523,14 @@ export default function QuotePage() {
                     </button>
                   ))}
                 </div>
-              </Step>
+              </div>
 
-              {/* STEP 03 — PAINT */}
-              <Step num="03" heading="Pick your paint color">
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: 13,
-                    color: "var(--ink-3)",
-                    margin: "0 0 16px",
-                  }}
-                >
-                  Three Benjamin Moore whites. They cover most modern trim
-                  — pick the one closest to yours, or send me a photo of
-                  your trim and I&apos;ll match it.
+              {/* PAINT */}
+              <div className="config-section">
+                <span className="overline">Paint color</span>
+                <p className="config-help">
+                  Three Benjamin Moore whites. Pick the one closest to your
+                  trim, or send me a photo and I&apos;ll match it.
                 </p>
                 <div className="card-grid-3">
                   {COLORS.map((c) => (
@@ -484,7 +554,7 @@ export default function QuotePage() {
                         <div
                           style={{
                             fontFamily: "var(--font-serif)",
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: 400,
                             letterSpacing: "-0.01em",
                             color: "var(--ink)",
@@ -510,38 +580,20 @@ export default function QuotePage() {
                 <button
                   type="button"
                   onClick={useTrimPhoto}
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: 14,
-                    color: "var(--oxide)",
-                    background: "transparent",
-                    border: "none",
-                    borderBottom: "1px solid var(--oxide)",
-                    cursor: "pointer",
-                    padding: "0 0 2px",
-                    marginTop: 16,
-                    alignSelf: "flex-start",
-                    width: "fit-content",
-                  }}
+                  className="trim-photo-link"
                 >
                   Send a photo of your trim instead →
                 </button>
-              </Step>
+              </div>
 
-              {/* STEP 04 — DIMENSIONS */}
-              <Step num="04" heading="Radiator dimensions">
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: 13,
-                    color: "var(--ink-3)",
-                    margin: "0 0 16px",
-                  }}
-                >
+              {/* DIMENSIONS */}
+              <div className="config-section">
+                <span className="overline">Radiator dimensions</span>
+                <p className="config-help">
                   Rough is fine — I&apos;ll measure the final dimensions in
                   person if you&apos;re local.{" "}
                   <Link href="/measure" className="oxide-link">
-                    Need help measuring? Watch the 90-second guide →
+                    Need help? Watch the 90-second guide →
                   </Link>
                 </p>
                 <div className="r-grid-3" style={{ gap: 24 }}>
@@ -567,10 +619,11 @@ export default function QuotePage() {
                     mono
                   />
                 </div>
-              </Step>
+              </div>
 
-              {/* STEP 05 — DELIVERY */}
-              <Step num="05" heading="How do you want it?">
+              {/* DELIVERY */}
+              <div className="config-section">
+                <span className="overline">Delivery</span>
                 <div
                   style={{ display: "flex", flexDirection: "column", gap: 12 }}
                 >
@@ -581,7 +634,7 @@ export default function QuotePage() {
                       onClick={() => update("delivery", d.key)}
                       data-selected={config.delivery === d.key}
                       className="select-card"
-                      style={{ padding: 20 }}
+                      style={{ padding: 18 }}
                     >
                       <div
                         style={{
@@ -594,7 +647,7 @@ export default function QuotePage() {
                         <div
                           style={{
                             fontFamily: "var(--font-serif)",
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: 400,
                             letterSpacing: "-0.01em",
                             color: "var(--ink)",
@@ -618,7 +671,7 @@ export default function QuotePage() {
                       <p
                         style={{
                           fontFamily: "var(--font-serif)",
-                          fontSize: 16,
+                          fontSize: 15,
                           color: "var(--ink-2)",
                           lineHeight: 1.55,
                           margin: 0,
@@ -629,10 +682,11 @@ export default function QuotePage() {
                     </button>
                   ))}
                 </div>
-              </Step>
+              </div>
 
-              {/* STEP 06 — CONTACT */}
-              <Step num="06" heading="About you">
+              {/* CONTACT */}
+              <div className="config-section">
+                <span className="overline">About you</span>
                 <div className="r-grid-2" style={{ gap: 24 }}>
                   <Field
                     label="Your name"
@@ -662,41 +716,20 @@ export default function QuotePage() {
                     className="field-label"
                     style={{ display: "block" }}
                   >
-                    Anything else? <span style={{ color: "var(--ink-4)" }}>(optional)</span>
+                    Anything else?{" "}
+                    <span style={{ color: "var(--ink-4)" }}>(optional)</span>
                   </label>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: 13,
-                      color: "var(--ink-3)",
-                      margin: "0 0 8px",
-                    }}
-                  >
-                    Pipes in odd places, window recess, tile floor, deadline
-                    — anything I should know.
-                  </p>
                   <textarea
                     value={config.notes}
                     onChange={(e) => update("notes", e.target.value)}
-                    rows={4}
-                    placeholder="Optional"
-                    style={{
-                      width: "100%",
-                      resize: "vertical",
-                      border: "1px solid var(--hairline)",
-                      background: "var(--bone)",
-                      padding: 12,
-                      fontFamily: "var(--font-sans)",
-                      fontSize: 15,
-                      color: "var(--ink)",
-                      outline: "none",
-                      borderRadius: 2,
-                    }}
+                    rows={3}
+                    placeholder="Pipes in odd places, window recess, tile floor, deadline — anything I should know."
+                    className="config-textarea"
                   />
                 </div>
-              </Step>
+              </div>
 
-              {/* HONEYPOT — hidden field bots fill in. Real users never see it. */}
+              {/* HONEYPOT */}
               <div
                 aria-hidden="true"
                 style={{
@@ -787,95 +820,34 @@ export default function QuotePage() {
                 </div>
               ) : null}
 
-              {/* SUBMIT FOOTER */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 24,
-                  paddingTop: 24,
-                  borderTop: "1px solid var(--hairline)",
-                  flexWrap: "wrap",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 12,
-                    color: "var(--ink-3)",
-                    maxWidth: 380,
-                  }}
-                >
-                  Quote returned within 2 business days. No spam, no
-                  follow-up loops.
-                </span>
+              {/* CHECKOUT BLOCK — build-up + CTA + trust band */}
+              <div className="config-checkout">
+                <div className="config-buildup">
+                  <span className="config-buildup-spec">
+                    {buildupSpec(config)}
+                  </span>
+                  <div className="config-buildup-price">
+                    {priceLabel(config)}
+                  </div>
+                </div>
                 <button
                   type="submit"
-                  className="btn-primary"
+                  className="btn-primary config-cta"
                   disabled={submitting}
                   style={{ opacity: submitting ? 0.6 : 1 }}
                 >
                   {submitting ? "Sending..." : "Request quote →"}
                 </button>
+                <div className="trust-band">
+                  ✓ Measured to fit · ✓ Built in Milton, MA · ✓ Quote in 2
+                  days
+                </div>
               </div>
             </div>
-
-            {/* RIGHT — SUMMARY */}
-            <SummaryCard config={config} submitting={submitting} />
           </form>
         </div>
       </section>
     </main>
-  );
-}
-
-function Step({
-  num,
-  heading,
-  children,
-}: {
-  num: string;
-  heading: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section
-      style={{ display: "flex", flexDirection: "column", gap: 18 }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "baseline",
-          gap: 16,
-          paddingBottom: 8,
-          borderBottom: "1px solid var(--hairline)",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 12,
-            color: "var(--oxide)",
-            letterSpacing: "0.08em",
-          }}
-        >
-          STEP {num}
-        </span>
-        <h2
-          style={{
-            fontFamily: "var(--font-serif)",
-            fontSize: 26,
-            fontWeight: 400,
-            margin: 0,
-            letterSpacing: "-0.01em",
-          }}
-        >
-          {heading}
-        </h2>
-      </div>
-      {children}
-    </section>
   );
 }
 
@@ -908,209 +880,5 @@ function Field({
         type={type ?? "text"}
       />
     </label>
-  );
-}
-
-function SummaryCard({
-  config,
-  submitting,
-}: {
-  config: Config;
-  submitting: boolean;
-}) {
-  const screen = SCREENS.find((s) => s.name === config.screen);
-  const color = COLORS.find((c) => c.name === config.color);
-  const style = STYLES.find((s) => s.name === config.style);
-  const delivery = DELIVERY.find((d) => d.key === config.delivery);
-
-  const dimsKnown =
-    config.length || config.depth || config.height
-      ? `${config.length || "?"}" × ${config.depth || "?"}" × ${config.height || "?"}"`
-      : null;
-
-  return (
-    <aside
-      className="quote-summary"
-      style={{
-        background: "var(--paper)",
-        border: "1px solid var(--hairline)",
-        padding: 24,
-        display: "flex",
-        flexDirection: "column",
-        gap: 16,
-      }}
-    >
-      <span className="overline">Your cover</span>
-      <div
-        style={{ height: 1, background: "var(--ink)", width: 28 }}
-      />
-
-      {/* Live preview */}
-      <div
-        style={{
-          background: "var(--bone)",
-          border: "1px solid var(--hairline)",
-          padding: 12,
-          display: "flex",
-          flexDirection: "column",
-          gap: 8,
-        }}
-      >
-        {style ? (
-          <Image
-            src={style.img}
-            alt={`${style.name} cover preview`}
-            width={400}
-            height={240}
-            style={{ width: "100%", height: "auto" }}
-          />
-        ) : (
-          <div
-            style={{
-              aspectRatio: "5 / 3",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontFamily: "var(--font-mono)",
-              fontSize: 11,
-              color: "var(--ink-4)",
-              letterSpacing: "0.08em",
-            }}
-          >
-            STYLE PREVIEW
-          </div>
-        )}
-        {screen ? (
-          <Image
-            src={screen.img}
-            alt={`${screen.name} screen swatch`}
-            width={200}
-            height={140}
-            style={{ width: "100%", height: "auto" }}
-          />
-        ) : null}
-      </div>
-
-      {/* Spec list */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 8,
-          fontSize: 13,
-        }}
-      >
-        <SpecRow
-          label="Style"
-          value={style ? style.name : "Not selected"}
-          set={!!style}
-        />
-        <SpecRow
-          label="Screen"
-          value={
-            screen ? `${screen.name} · ${screen.spec}` : "Not selected"
-          }
-          set={!!screen}
-        />
-        <SpecRow
-          label="Color"
-          value={
-            color
-              ? `${color.name} (${color.code})`
-              : config.notes.includes("photo of my trim")
-                ? "Trim photo to follow"
-                : "Not selected"
-          }
-          set={!!color || config.notes.includes("photo of my trim")}
-        />
-        <SpecRow
-          label="Size"
-          value={dimsKnown ?? "Not entered"}
-          set={!!dimsKnown}
-        />
-        <SpecRow
-          label="Delivery"
-          value={
-            delivery
-              ? delivery.key === "local"
-                ? "Local install"
-                : "Flat-pack"
-              : "Not selected"
-          }
-          set={!!delivery}
-        />
-      </div>
-
-      {/* Estimated price */}
-      <div
-        style={{
-          paddingTop: 12,
-          borderTop: "1px solid var(--hairline)",
-          fontFamily: "var(--font-serif)",
-          fontSize: 17,
-          fontWeight: 500,
-          color: "var(--ink)",
-        }}
-      >
-        {priceLabel(config)}
-      </div>
-
-      {/* Mini CTA */}
-      <button
-        type="submit"
-        className="btn-primary"
-        disabled={submitting}
-        style={{
-          width: "100%",
-          justifyContent: "center",
-          opacity: submitting ? 0.6 : 1,
-        }}
-      >
-        {submitting ? "Sending..." : "Request quote →"}
-      </button>
-    </aside>
-  );
-}
-
-function SpecRow({
-  label,
-  value,
-  set,
-}: {
-  label: string;
-  value: string;
-  set: boolean;
-}) {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "72px 1fr",
-        gap: 12,
-        alignItems: "baseline",
-      }}
-    >
-      <span
-        style={{
-          fontFamily: "var(--font-mono)",
-          fontSize: 11,
-          color: "var(--ink-3)",
-          letterSpacing: "0.04em",
-        }}
-      >
-        {label}
-      </span>
-      <span
-        style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: 13,
-          color: set ? "var(--ink)" : "var(--ink-4)",
-          fontWeight: set ? 500 : 400,
-          lineHeight: 1.4,
-        }}
-      >
-        {value}
-      </span>
-    </div>
   );
 }
