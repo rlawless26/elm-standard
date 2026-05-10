@@ -20,31 +20,48 @@ export default async function AdminLayout({
         <header
           style={{
             display: "flex",
-            alignItems: "baseline",
+            alignItems: "center",
             justifyContent: "space-between",
             gap: 16,
             paddingBottom: 16,
             borderBottom: "1px solid var(--hairline)",
+            flexWrap: "wrap",
           }}
         >
-          <div style={{ display: "flex", alignItems: "baseline", gap: 16 }}>
-            <span
-              className="overline"
-              style={{ color: "var(--oxide)" }}
-            >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              gap: 24,
+              flexWrap: "wrap",
+            }}
+          >
+            <span className="overline" style={{ color: "var(--oxide)" }}>
               ADMIN
             </span>
             <Link
               href="/admin"
               style={{
                 fontFamily: "var(--font-serif)",
-                fontSize: 24,
+                fontSize: 22,
                 fontWeight: 400,
                 color: "var(--ink)",
                 letterSpacing: "-0.01em",
               }}
             >
               Quote requests
+            </Link>
+            <Link
+              href="/admin/pricing"
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: 22,
+                fontWeight: 400,
+                color: "var(--ink-3)",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Pricing
             </Link>
           </div>
           <form action="/admin/logout" method="post">

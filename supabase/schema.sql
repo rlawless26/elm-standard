@@ -28,3 +28,39 @@ create index if not exists quote_requests_status_idx     on public.quote_request
 -- Lock down: RLS on, no policies = deny by default for anon/authenticated.
 -- The API route uses the service role key, which bypasses RLS.
 alter table public.quote_requests enable row level security;
+
+
+-- =========================================================================
+-- pricing_config: single-row table holding the formula knobs the admin can
+-- edit without redeploying. The /quote page reads this to compute instant
+-- prices; the formula lives in lib/pricing.ts.
+--
+-- Singleton enforced by the check constraint pinning id to a fixed UUID.
+-- =========================================================================
+
+create table if not exists public.pricing_config (
+  id                          uuid        primary key default '00000000-0000-0000-0000-000000000001'::uuid,
+  base_rate_per_sqin          numeric     not null default 0.35,
+  shaker_multiplier           numeric     not null default 1.00,
+  modern_multiplier           numeric     not null default 1.05,
+  traditional_multiplier      numeric     not null default 1.15,
+  brass_screen_upcharge       numeric     not null default 50,
+  depth_threshold_in          numeric     not null default 9,
+  depth_surcharge_per_inch    numeric     not null default 25,
+  delivery_local_fee          numeric     not null default 400,
+  delivery_flatpack_fee       numeric     not null default 300,
+  material_spike_multiplier   numeric     not null default 1.00,
+  price_floor                 numeric     not null default 350,
+  dim_max_length_in           numeric     not null default 72,
+  dim_max_height_in           numeric     not null default 48,
+  dim_max_depth_in            numeric     not null default 18,
+  updated_at                  timestamptz not null default now(),
+  constraint pricing_config_singleton check (id = '00000000-0000-0000-0000-000000000001'::uuid)
+);
+
+-- Seed the singleton row if missing.
+insert into public.pricing_config (id)
+values ('00000000-0000-0000-0000-000000000001'::uuid)
+on conflict (id) do nothing;
+
+alter table public.pricing_config enable row level security;
