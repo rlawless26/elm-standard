@@ -52,3 +52,5 @@ venv/
 # Misc
 .tmp/
 tmp/
+.vercel
+.env*.local
