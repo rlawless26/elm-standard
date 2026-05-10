@@ -249,6 +249,9 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
   const ctaDisabled = priceResult.kind === "incomplete" || submitting;
 
   const submitDeposit = async () => {
+    // Note: not passing `email` — Stripe Checkout collects it on the
+    // hosted page. Passing a half-typed/invalid value would 502 the
+    // checkout creation.
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -261,7 +264,6 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
         height: config.height,
         delivery: config.delivery,
         notes: config.notes,
-        email: config.email,
       }),
     });
     const json = (await res.json().catch(() => null)) as
@@ -764,6 +766,30 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                 </div>
               </div>
 
+              {/* NOTES — always available; flows to Stripe metadata on the
+                  deposit path, or into the email body on the over-cap path. */}
+              <div className="config-section">
+                <span className="overline">
+                  Anything I should know?{" "}
+                  <span
+                    style={{ color: "var(--ink-4)", letterSpacing: "0.04em" }}
+                  >
+                    (optional)
+                  </span>
+                </span>
+                <p className="config-help">
+                  Pipes in odd places, window recess, tile floor, deadline
+                  — anything that affects the build.
+                </p>
+                <textarea
+                  value={config.notes}
+                  onChange={(e) => update("notes", e.target.value)}
+                  rows={3}
+                  placeholder="Optional"
+                  className="config-textarea"
+                />
+              </div>
+
               {/* CONTACT — visible only on the over-cap (email-quote) path.
                   When the price is ready, Stripe Checkout collects email/name. */}
               {showContact ? (
@@ -798,19 +824,6 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                     placeholder="02186"
                     mono
                   />
-                  <div>
-                    <label className="field-label" style={{ display: "block" }}>
-                      Anything else?{" "}
-                      <span style={{ color: "var(--ink-4)" }}>(optional)</span>
-                    </label>
-                    <textarea
-                      value={config.notes}
-                      onChange={(e) => update("notes", e.target.value)}
-                      rows={3}
-                      placeholder="Pipes in odd places, window recess, tile floor, deadline — anything I should know."
-                      className="config-textarea"
-                    />
-                  </div>
                 </div>
               ) : null}
 

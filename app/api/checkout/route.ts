@@ -144,11 +144,16 @@ export async function POST(req: Request) {
     DELIVERY_LABEL[delivery],
   ].join(" · ");
 
+  // Only pass customer_email to Stripe if it actually looks like an email.
+  // Anything else (empty, garbage from stale state) → let Stripe collect.
+  const emailHint = body.email?.trim() ?? "";
+  const looksLikeEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailHint);
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
-      customer_email: body.email?.trim() || undefined,
+      customer_email: looksLikeEmail ? emailHint : undefined,
       line_items: [
         {
           price_data: {
