@@ -96,7 +96,7 @@ export default function Footer() {
           links={[
             ["About", "/about"],
             ["Milton, MA", null],
-            ["hello@elmstandard.com", null],
+            ["rob@elmstandard.com", null],
           ]}
         />
       </div>

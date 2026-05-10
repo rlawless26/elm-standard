@@ -80,7 +80,7 @@ export async function POST(req: Request) {
   // exists and shows up in /admin.
   const resendKey = process.env.RESEND_API_KEY;
   const fromAddr = process.env.RESEND_FROM;
-  const toAddr = process.env.QUOTES_TO_EMAIL ?? "hello@elmstandard.com";
+  const toAddr = process.env.QUOTES_TO_EMAIL ?? "rob@elmstandard.com";
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://elmstandard.com";
 
   if (resendKey && fromAddr) {

@@ -224,16 +224,16 @@ export default function SafetyPage() {
               }}
             >
               <a
-                href="mailto:hello@elmstandard.com"
+                href="mailto:rob@elmstandard.com"
                 style={{
                   fontFamily: "var(--font-mono)",
                   fontSize: 16,
                   color: "var(--ink)",
                 }}
               >
-                hello@elmstandard.com
+                rob@elmstandard.com
               </a>
-              <a href="mailto:hello@elmstandard.com" className="btn-text">
+              <a href="mailto:rob@elmstandard.com" className="btn-text">
                 Email →
               </a>
             </div>

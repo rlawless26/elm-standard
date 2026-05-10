@@ -169,7 +169,7 @@ function buildMailto(config: Config): string {
   if (config.notes) {
     lines.push("— Notes —", config.notes);
   }
-  return `mailto:hello@elmstandard.com?subject=${encodeURIComponent(
+  return `mailto:rob@elmstandard.com?subject=${encodeURIComponent(
     subject,
   )}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
@@ -265,11 +265,11 @@ export default function QuotePage() {
             I&apos;ll come back with a one-page quote within two business
             days. If anything&apos;s unclear, I&apos;ll email{" "}
             <a
-              href="mailto:hello@elmstandard.com"
+              href="mailto:rob@elmstandard.com"
               className="oxide-link"
               style={{ whiteSpace: "nowrap" }}
             >
-              from hello@elmstandard.com
+              from rob@elmstandard.com
             </a>{" "}
             first.
           </p>
