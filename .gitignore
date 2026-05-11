@@ -54,3 +54,9 @@ venv/
 tmp/
 .vercel
 .env*.local
+
+# Local screenshots / pdfs (not part of the app)
+site_pdfs/
+
+# Claude Code session state
+.claude/

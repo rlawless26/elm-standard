@@ -10,16 +10,19 @@ const stylesPreview = [
     name: "Traditional",
     tag: "decorative moulding & accents",
     img: "/style-traditional.svg",
+    href: "/traditional",
   },
   {
     name: "Shaker",
     tag: "clean lines & flat panels",
     img: "/style-shaker.svg",
+    href: "/shaker",
   },
   {
     name: "Modern",
     tag: "wide rails & minimalist style",
     img: "/style-modern.svg",
+    href: "/modern",
   },
 ];
 
@@ -64,12 +67,9 @@ export default function HomePage() {
               screens, your trim color. Local delivery or flat-pack shipping.
             </p>
             <div style={{ display: "flex", gap: 14, marginTop: 8, flexWrap: "wrap" }}>
-              <Link href="/quote" className="btn-primary">
-                Get a quote
-              </Link>
-              <Link href="/styles" className="btn-outline">
+              <a href="#styles" className="btn-primary">
                 See the styles
-              </Link>
+              </a>
             </div>
           </div>
           <div
@@ -108,14 +108,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* THREE STYLES PREVIEW */}
+      {/* THREE STYLES PREVIEW — each card is the entry into a real PDP */}
       <section
+        id="styles"
         className="section-pad-lg"
         style={{
           padding: "96px 0",
           background: "var(--paper)",
           borderTop: "1px solid var(--hairline)",
           borderBottom: "1px solid var(--hairline)",
+          scrollMarginTop: 88,
         }}
       >
         <div className="container">
@@ -140,7 +142,7 @@ export default function HomePage() {
             {stylesPreview.map((s) => (
               <Link
                 key={s.name}
-                href="/styles"
+                href={s.href}
                 className="card-lift"
                 style={{
                   background: "var(--bone)",
@@ -239,7 +241,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA BAND */}
+      {/* GUARANTEE BAND */}
       <section
         className="mesh-ground section-pad-lg"
         style={{
@@ -250,9 +252,10 @@ export default function HomePage() {
         }}
       >
         <div className="container r-flex-cta">
-          <div>
-            <h2 className="display-h2">
-              Ready for a cover that fits?
+          <div style={{ maxWidth: 640 }}>
+            <span className="overline">Made-to-fit guarantee</span>
+            <h2 className="display-h2" style={{ marginTop: 12 }}>
+              Built right — or rebuilt at no charge.
             </h2>
             <p
               style={{
@@ -260,15 +263,20 @@ export default function HomePage() {
                 fontSize: 18,
                 color: "var(--ink-2)",
                 marginTop: 12,
+                lineHeight: 1.55,
               }}
             >
-              Tell me about your radiator. I&apos;ll have a quote back to you
-              within two days.
+              If I measure your radiator and the cover doesn&apos;t fit, I
+              rebuild it at no charge. Flat-pack panels are replaced free
+              within 7 days of delivery if anything arrives damaged.{" "}
+              <Link href="/refunds" className="oxide-link">
+                Refund policy →
+              </Link>
             </p>
           </div>
-          <Link href="/quote" className="btn-primary">
-            Get a quote →
-          </Link>
+          <a href="#styles" className="btn-primary">
+            See the styles →
+          </a>
         </div>
       </section>
     </main>

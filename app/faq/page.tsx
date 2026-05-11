@@ -23,17 +23,47 @@ const groups: Group[] = [
         "Sometimes. If you've got a deadline, ask in your quote request. If I can hit it, I will. If I can't, I'll tell you straight.",
       ],
       [
-        "How does the quote work?",
-        "Tell me about your radiator (rough dimensions are fine to start). I come back within two business days with a one-page quote: dimensions, style, finish, lead time, and price. If you accept, I send an invoice for a 50% deposit. The rest is due before delivery.",
+        "How does pricing work?",
+        "Pick a style, configure the screen / paint / dimensions, and you see an instant price right on the page. Reserve the build with a 30% deposit via Stripe — the balance is due at install (local) or before shipment (flat-pack). If your dimensions are larger than the standard range, the page swaps to a custom-quote form and I email you a one-page quote within two business days.",
       ],
       [
         "How do I pay?",
-        "Stripe handles credit cards. ACH or check is also fine, especially for the deposit.",
+        "Stripe handles the deposit via credit card, Apple Pay, or Link. The balance can be paid via Stripe, ACH, or check — whatever's easiest for you.",
       ],
     ],
   },
   {
     n: "02",
+    title: "Deposits, balance, refunds",
+    qa: [
+      [
+        "Why a deposit?",
+        "Made-to-measure furniture is built for one specific radiator — I can't resell a cover that doesn't fit anyone else's. The 30% deposit covers materials and the labor to cut and assemble the carcass. The remaining 70% is due when your cover is ready.",
+      ],
+      [
+        "When do I pay the balance?",
+        "Local install: at install. I bring an invoice and you pay before I leave. Flat-pack: I email a balance invoice when your cover is ready to ship, paid before it goes on the truck.",
+      ],
+      [
+        "What if I change my mind before you build it?",
+        "Email me before I cut the wood and I refund the deposit in full. Production typically starts within 3–5 business days of your order — I confirm the cut date by email so you know your window.",
+      ],
+      [
+        "What if I change my mind after you start building?",
+        "The deposit is non-refundable once I've cut materials. You don't owe the balance, but the deposit covers the work and materials already sunk in.",
+      ],
+      [
+        "What if the cover doesn't fit?",
+        "If I measured your radiator, I rebuild it at no charge. If you measured it and the numbers were off, I rebuild at materials cost — labor is on me. The made-to-fit guarantee is on the terms page.",
+      ],
+      [
+        "What if my flat-pack arrives damaged?",
+        "Email me with photos within 7 days of delivery. I ship replacement panels at no charge.",
+      ],
+    ],
+  },
+  {
+    n: "03",
     title: "Sizing & fit",
     qa: [
       [
@@ -59,7 +89,7 @@ const groups: Group[] = [
     ],
   },
   {
-    n: "03",
+    n: "04",
     title: "Finishes & customization",
     qa: [
       [
@@ -81,7 +111,7 @@ const groups: Group[] = [
     ],
   },
   {
-    n: "04",
+    n: "05",
     title: "Local install vs flat-pack",
     qa: [
       [
@@ -103,7 +133,7 @@ const groups: Group[] = [
     ],
   },
   {
-    n: "05",
+    n: "06",
     title: "Care & maintenance",
     qa: [
       [
@@ -125,7 +155,7 @@ const groups: Group[] = [
     ],
   },
   {
-    n: "06",
+    n: "07",
     title: "About the shop",
     qa: [
       ["Is this your full-time job?", "Yes."],

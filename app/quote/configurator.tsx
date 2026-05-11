@@ -10,9 +10,9 @@ import {
   type PricingConfig,
 } from "@/lib/pricing";
 import {
-  STYLE_TO_CODE,
   SCREEN_TO_CODE,
   DELIVERY_TO_CODE,
+  type StyleCode,
 } from "@/lib/quote-schema";
 
 type StyleName = "Traditional" | "Shaker" | "Modern";
@@ -25,7 +25,7 @@ type ColorName = "Super White" | "Paper White" | "Chantilly Lace";
 type DeliveryKey = "local" | "flat";
 
 type Config = {
-  style: StyleName | null;
+  style: StyleName;
   screen: ScreenName | null;
   color: ColorName | null;
   length: string;
@@ -38,41 +38,11 @@ type Config = {
   notes: string;
 };
 
-const initialConfig: Config = {
-  style: null,
-  screen: null,
-  color: null,
-  length: "",
-  depth: "",
-  height: "",
-  delivery: null,
-  name: "",
-  email: "",
-  zip: "",
-  notes: "",
+const STYLE_NAME_BY_CODE: Record<StyleCode, StyleName> = {
+  traditional: "Traditional",
+  shaker: "Shaker",
+  modern: "Modern",
 };
-
-const STYLES: Array<{
-  name: StyleName;
-  tag: string;
-  img: string;
-}> = [
-  {
-    name: "Traditional",
-    tag: "Decorative moulding & accents",
-    img: "/style-traditional.svg",
-  },
-  {
-    name: "Shaker",
-    tag: "Clean lines & flat panels",
-    img: "/style-shaker.svg",
-  },
-  {
-    name: "Modern",
-    tag: "Wide rails & minimalist style",
-    img: "/style-modern.svg",
-  },
-];
 
 const SCREENS: Array<{
   name: ScreenName;
@@ -137,15 +107,7 @@ const DELIVERY: Array<{
 
 const PHOTO_NOTE_PREFILL = "I'll send a photo of my trim color.";
 
-const GALLERY: Array<{ src: string; alt: string }> = [
-  {
-    src: "/radiator-cover-isometric.png",
-    alt: "Radiator cover, isometric view",
-  },
-  { src: "/style-traditional.svg", alt: "Traditional cover, front elevation" },
-  { src: "/style-shaker.svg", alt: "Shaker cover, front elevation" },
-  { src: "/style-modern.svg", alt: "Modern cover, front elevation" },
-];
+export type GalleryItem = { src: string; alt: string };
 
 function parseDim(v: string): number | null {
   if (!v.trim()) return null;
@@ -153,9 +115,9 @@ function parseDim(v: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function buildPriceInput(config: Config): PriceInput {
+function buildPriceInput(config: Config, lockedStyle: StyleCode): PriceInput {
   return {
-    style: config.style ? STYLE_TO_CODE[config.style] : null,
+    style: lockedStyle,
     screen: config.screen ? SCREEN_TO_CODE[config.screen] : null,
     length_in: parseDim(config.length),
     depth_in: parseDim(config.depth),
@@ -165,21 +127,18 @@ function buildPriceInput(config: Config): PriceInput {
 }
 
 function buildupSpec(config: Config): string {
-  const parts: string[] = [];
-  if (config.style) parts.push(`${config.style} cover`);
+  const parts: string[] = [`${config.style} cover`];
   const dims = [config.length, config.depth, config.height];
   if (dims.every(Boolean)) parts.push(`${dims.join('" × ')}"`);
   if (config.color) parts.push(config.color);
   if (config.delivery) {
     parts.push(config.delivery === "local" ? "local install" : "flat-pack");
   }
-  return parts.length ? parts.join(" · ") : "Your configuration";
+  return parts.join(" · ");
 }
 
 function buildMailto(config: Config): string {
-  const subject = `New quote request — ${config.name || "Unknown"} — ${
-    config.style ?? "(no style)"
-  }`;
+  const subject = `New quote request — ${config.name || "Unknown"} — ${config.style}`;
   const dimensions = [config.length, config.depth, config.height]
     .map((v) => v || "?")
     .join('" × ');
@@ -192,7 +151,7 @@ function buildMailto(config: Config): string {
 
   const lines = [
     "— Cover configuration —",
-    `Style:    ${config.style ?? "(not selected)"}`,
+    `Style:    ${config.style}`,
     `Screen:   ${config.screen ?? "(not selected)"}`,
     `Color:    ${config.color ?? "(not selected)"}`,
     `Size:     ${dimensions}"`,
@@ -214,7 +173,33 @@ function buildMailto(config: Config): string {
 
 type SubmitError = "generic" | "network" | "rate" | "stripe" | null;
 
-export function Configurator({ pricing }: { pricing: PricingConfig }) {
+export function Configurator({
+  pricing,
+  lockedStyle,
+  gallery,
+  tagline,
+}: {
+  pricing: PricingConfig;
+  lockedStyle: StyleCode;
+  gallery: GalleryItem[];
+  tagline: string;
+}) {
+  const styleName = STYLE_NAME_BY_CODE[lockedStyle];
+
+  const initialConfig: Config = {
+    style: styleName,
+    screen: null,
+    color: null,
+    length: "",
+    depth: "",
+    height: "",
+    delivery: null,
+    name: "",
+    email: "",
+    zip: "",
+    notes: "",
+  };
+
   const [config, setConfig] = useState<Config>(initialConfig);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -235,23 +220,19 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
   };
 
   const priceResult: PriceResult = useMemo(
-    () => calculatePrice(buildPriceInput(config), pricing),
-    [config, pricing],
+    () => calculatePrice(buildPriceInput(config, lockedStyle), pricing),
+    [config, pricing, lockedStyle],
   );
 
   // Contact-form section appears only on the over-cap path, where the
   // request gets emailed via /api/quote. For ready configs, Stripe Checkout
-  // collects email/name. While the user is still configuring (incomplete),
-  // nothing yet to contact about.
+  // collects email/name.
   const showContact = priceResult.kind === "over_cap";
 
   // CTA disabled state — user shouldn't be able to submit incomplete configs.
   const ctaDisabled = priceResult.kind === "incomplete" || submitting;
 
   const submitDeposit = async () => {
-    // Note: not passing `email` — Stripe Checkout collects it on the
-    // hosted page. Passing a half-typed/invalid value would 502 the
-    // checkout creation.
     const res = await fetch("/api/checkout", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -280,7 +261,6 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
       setSubmitting(false);
       return;
     }
-    // Hand the user off to Stripe.
     window.location.href = json.url;
   };
 
@@ -325,7 +305,6 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
       } else if (priceResult.kind === "over_cap") {
         await submitQuoteRequest();
       } else {
-        // Incomplete — shouldn't happen with disabled button, but guard anyway.
         setSubmitting(false);
       }
     } catch {
@@ -380,9 +359,11 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
     );
   }
 
+  const heroImage = gallery[galleryIndex] ?? gallery[0];
+
   return (
     <main>
-      {/* THIN STRIP — overline, no big hero */}
+      {/* THIN STRIP — overline */}
       <section style={{ padding: "48px 0 24px" }}>
         <div className="container">
           <div
@@ -393,7 +374,18 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
               flexWrap: "wrap",
             }}
           >
-            <span className="overline">Build your cover</span>
+            <Link
+              href="/"
+              className="overline"
+              style={{
+                color: "var(--ink-3)",
+                fontWeight: 400,
+                borderBottom: "1px solid var(--hairline)",
+                paddingBottom: 2,
+              }}
+            >
+              All styles
+            </Link>
             <span
               style={{
                 fontFamily: "var(--font-mono)",
@@ -404,12 +396,7 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
             >
               ·
             </span>
-            <span
-              className="overline"
-              style={{ color: "var(--ink-3)", fontWeight: 400 }}
-            >
-              Custom · Made to order
-            </span>
+            <span className="overline">{styleName}</span>
           </div>
         </div>
       </section>
@@ -422,27 +409,29 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
             <div className="quote-gallery">
               <div className="gallery-hero">
                 <Image
-                  src={GALLERY[galleryIndex].src}
-                  alt={GALLERY[galleryIndex].alt}
+                  src={heroImage.src}
+                  alt={heroImage.alt}
                   width={720}
                   height={540}
                   priority
                 />
               </div>
-              <div className="gallery-thumbs">
-                {GALLERY.map((g, i) => (
-                  <button
-                    type="button"
-                    key={g.src}
-                    onClick={() => setGalleryIndex(i)}
-                    data-selected={galleryIndex === i}
-                    aria-label={`View ${g.alt}`}
-                    className="gallery-thumb"
-                  >
-                    <Image src={g.src} alt="" width={120} height={90} />
-                  </button>
-                ))}
-              </div>
+              {gallery.length > 1 ? (
+                <div className="gallery-thumbs">
+                  {gallery.map((g, i) => (
+                    <button
+                      type="button"
+                      key={g.src}
+                      onClick={() => setGalleryIndex(i)}
+                      data-selected={galleryIndex === i}
+                      aria-label={`View ${g.alt}`}
+                      className="gallery-thumb"
+                    >
+                      <Image src={g.src} alt="" width={120} height={90} />
+                    </button>
+                  ))}
+                </div>
+              ) : null}
             </div>
 
             {/* RIGHT — CONFIGURATOR */}
@@ -450,71 +439,14 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
               {/* TITLE */}
               <div className="config-title">
                 <h1 className="display-h2" style={{ marginBottom: 0 }}>
-                  Made-to-fit radiator cover.
+                  {styleName} radiator cover.
                 </h1>
                 <p
                   className="lead-fluid"
                   style={{ fontSize: "clamp(1rem, 0.4vw + 0.95rem, 1.125rem)" }}
                 >
-                  Three styles, three screens, your color. Built to your
-                  radiator&apos;s exact dimensions.
+                  {tagline}
                 </p>
-              </div>
-
-              {/* STYLE */}
-              <div className="config-section">
-                <span className="overline">Style</span>
-                <div className="card-grid-3">
-                  {STYLES.map((s) => (
-                    <button
-                      type="button"
-                      key={s.name}
-                      onClick={() => update("style", s.name)}
-                      data-selected={config.style === s.name}
-                      className="select-card"
-                    >
-                      <div
-                        style={{
-                          background: "var(--bone)",
-                          border: "1px solid var(--hairline)",
-                          padding: 12,
-                        }}
-                      >
-                        <Image
-                          src={s.img}
-                          alt={`${s.name} radiator cover elevation`}
-                          width={400}
-                          height={240}
-                          style={{ width: "100%", height: "auto" }}
-                        />
-                      </div>
-                      <div>
-                        <div
-                          style={{
-                            fontFamily: "var(--font-serif)",
-                            fontSize: 18,
-                            fontWeight: 400,
-                            letterSpacing: "-0.01em",
-                            color: "var(--ink)",
-                          }}
-                        >
-                          {s.name}
-                        </div>
-                        <div
-                          style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: 11,
-                            color: "var(--ink-3)",
-                            letterSpacing: "0.04em",
-                            marginTop: 4,
-                          }}
-                        >
-                          {s.tag}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
               </div>
 
               {/* SCREEN */}
@@ -766,8 +698,7 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                 </div>
               </div>
 
-              {/* NOTES — always available; flows to Stripe metadata on the
-                  deposit path, or into the email body on the over-cap path. */}
+              {/* NOTES */}
               <div className="config-section">
                 <span className="overline">
                   Anything I should know?{" "}
@@ -790,8 +721,7 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                 />
               </div>
 
-              {/* CONTACT — visible only on the over-cap (email-quote) path.
-                  When the price is ready, Stripe Checkout collects email/name. */}
+              {/* CONTACT — visible only on over-cap path */}
               {showContact ? (
                 <div className="config-section">
                   <span className="overline">About you</span>
@@ -930,7 +860,7 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                 </div>
               ) : null}
 
-              {/* CHECKOUT BLOCK — build-up + price + CTA + trust band */}
+              {/* CHECKOUT BLOCK */}
               <div className="config-checkout">
                 <div className="config-buildup">
                   <span className="config-buildup-spec">
@@ -975,8 +905,6 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
 
 function ctaLabel(result: PriceResult, submitting: boolean): string {
   if (result.kind === "ready") {
-    // The deposit path redirects to Stripe almost instantly — no need for
-    // a label swap, the dimmed/disabled button is feedback enough.
     const depositDollars = Math.round((result.total * 30) / 100);
     return `Reserve your build — $${depositDollars.toLocaleString()} deposit →`;
   }

@@ -69,16 +69,16 @@ export default function Footer() {
         <FooterCol
           title="Shop"
           links={[
-            ["Three styles", "/styles"],
-            ["How it works", "/how-it-works"],
-            ["Get a quote", "/quote"],
+            ["Traditional", "/traditional"],
+            ["Shaker", "/shaker"],
+            ["Modern", "/modern"],
           ]}
         />
         <FooterCol
           title="Channels"
           links={[
-            ["Local install", "/quote"],
-            ["Flat-pack ship", "/quote"],
+            ["Local install — Boston", null],
+            ["Flat-pack shipping", null],
             ["Etsy storefront", null],
           ]}
         />

@@ -8,8 +8,8 @@ import Wordmark from "./Wordmark";
 const NAV: Array<{ label: string; href: string }> = [
   { label: "Home", href: "/" },
   { label: "How it works", href: "/how-it-works" },
-  { label: "Styles", href: "/styles" },
   { label: "About", href: "/about" },
+  { label: "FAQ", href: "/faq" },
 ];
 
 export default function Header() {
@@ -79,9 +79,6 @@ export default function Header() {
               </Link>
             );
           })}
-          <Link href="/quote" className="btn-primary">
-            Get a quote
-          </Link>
         </nav>
 
         <button
@@ -117,13 +114,6 @@ export default function Header() {
               </Link>
             );
           })}
-          <Link
-            href="/quote"
-            className="btn-primary nav-mobile-cta"
-            onClick={() => setOpen(false)}
-          >
-            Get a quote
-          </Link>
         </div>
       ) : null}
     </header>
