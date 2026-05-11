@@ -35,8 +35,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Elm Standard — Custom radiator covers, handbuilt in Milton, MA",
-  description: "Custom radiator covers, handbuilt in Milton, MA.",
+  title: "Elm Standard — Custom radiator covers, handbuilt to fit",
+  description:
+    "Custom radiator covers built to your radiator's exact size. Three styles, three screens, your trim color. Local install across Greater Boston or flat-pack shipping anywhere in the US.",
 };
 
 export const viewport = {

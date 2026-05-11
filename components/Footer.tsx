@@ -62,7 +62,7 @@ export default function Footer() {
               marginTop: 8,
             }}
           >
-            Custom radiator covers, handbuilt in Milton, MA.
+            Custom radiator covers, handbuilt to fit.
           </div>
         </div>
 
@@ -95,7 +95,6 @@ export default function Footer() {
           title="Shop info"
           links={[
             ["About", "/about"],
-            ["Milton, MA", null],
             ["rob@elmstandard.com", null],
           ]}
         />
@@ -112,8 +111,7 @@ export default function Footer() {
           color: "var(--ink-3)",
         }}
       >
-        <span>© 2026 Elm Standard · Built in Milton, MA</span>
-        <span>Est. 2025</span>
+        <span>© 2026 Elm Standard</span>
       </div>
     </footer>
   );

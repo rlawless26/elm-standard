@@ -6,8 +6,8 @@ export const metadata = { title: "About — Elm Standard" };
 const stats: Array<[string, string]> = [
   ["Lead time", "4–6 weeks"],
   ["Local radius", "30 mi · MA"],
-  ["Started", "2025"],
   ["Finishes", "3 whites + brass option"],
+  ["Materials", "MDF + steel screen"],
 ];
 
 export default function AboutPage() {
@@ -131,7 +131,7 @@ export default function AboutPage() {
           >
             <Image
               src="/logo-stamp.svg"
-              alt="Elm Standard back-of-cover stamp — handbuilt in Milton, MA, est. 2025"
+              alt="Elm Standard back-of-cover stamp"
               width={160}
               height={160}
               style={{ alignSelf: "center" }}

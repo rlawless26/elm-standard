@@ -408,7 +408,7 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
               className="overline"
               style={{ color: "var(--ink-3)", fontWeight: 400 }}
             >
-              Custom · Milton, MA
+              Custom · Made to order
             </span>
           </div>
         </div>
@@ -959,7 +959,7 @@ export function Configurator({ pricing }: { pricing: PricingConfig }) {
                   </>
                 ) : null}
                 <div className="trust-band">
-                  ✓ Measured to fit · ✓ Built in Milton, MA ·{" "}
+                  ✓ Measured to fit · ✓ Made to order ·{" "}
                   {priceResult.kind === "ready"
                     ? "✓ 2-week build time"
                     : "✓ Quote in 2 days"}

@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Elm Standard — Custom radiator covers, handbuilt in Milton, MA",
+  title: "Elm Standard — Custom radiator covers, handbuilt to fit",
 };
 
 const stylesPreview = [
@@ -30,7 +30,7 @@ const valueProps: Array<[string, string]> = [
   ],
   [
     "Made to order",
-    "Cut, sanded, and primed in my Milton shop. The same person who measures it builds it.",
+    "Cut, sanded, and primed in my shop. The same person who measures it builds it.",
   ],
   [
     "Two ways to buy",
@@ -51,7 +51,7 @@ export default function HomePage() {
             style={{ display: "flex", flexDirection: "column", gap: 28 }}
           >
             <span className="overline">
-              Custom radiator covers · Milton, MA
+              Custom radiator covers
             </span>
             <h1 className="display-hero">
               Radiator covers, handbuilt to fit.
