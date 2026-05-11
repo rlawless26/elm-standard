@@ -40,12 +40,24 @@ export default async function AdminLayout({
               ADMIN
             </span>
             <Link
-              href="/admin"
+              href="/admin/orders"
               style={{
                 fontFamily: "var(--font-serif)",
                 fontSize: 22,
                 fontWeight: 400,
                 color: "var(--ink)",
+                letterSpacing: "-0.01em",
+              }}
+            >
+              Orders
+            </Link>
+            <Link
+              href="/admin"
+              style={{
+                fontFamily: "var(--font-serif)",
+                fontSize: 22,
+                fontWeight: 400,
+                color: "var(--ink-3)",
                 letterSpacing: "-0.01em",
               }}
             >
