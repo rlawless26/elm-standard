@@ -95,6 +95,9 @@ export default function Footer() {
           title="Shop info"
           links={[
             ["About", "/about"],
+            ["Terms of sale", "/terms"],
+            ["Refund policy", "/refunds"],
+            ["Privacy", "/privacy"],
             ["rob@elmstandard.com", null],
           ]}
         />

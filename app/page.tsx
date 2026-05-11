@@ -186,7 +186,7 @@ export default function HomePage() {
                       color: "var(--ink-3)",
                     }}
                   >
-                    {s.tag} · from $400
+                    {s.tag}
                   </span>
                 </div>
               </Link>
